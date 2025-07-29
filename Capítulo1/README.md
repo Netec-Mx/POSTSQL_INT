@@ -3,7 +3,7 @@
 ## Ejercicio 1: Transferencia bancaria con rollback controlado
 En el siguiente ejercicio practicarás diferentes escenarios de manejo de transacciones, comprobando su funcionamiento.
 
-Paso 1. Crear tabla y datos de prueba
+### Paso 1. Crear tabla y datos de prueba
 psql -U postgres
 
 ```sql
@@ -135,7 +135,7 @@ UPDATE 1
 Explicación: El UPDATE de la Sesión B ahora se ejecutó correctamente. El UPDATE aplicó el cambio de -150 al saldo actual que Sesión B vio después de que Sesión A hiciera commit (800). Por lo tanto, el saldo final de Juan será 800 - 150 = 650.
 
 
-### Paso 6. Verificación Final (En cualquier sesión, después de que ambas transacciones hayan terminado):
+### Paso 5. Verificación Final (En cualquier sesión, después de que ambas transacciones hayan terminado):
 
 ```sql
 SELECT * FROM cuentas WHERE nombre = 'Juan';
