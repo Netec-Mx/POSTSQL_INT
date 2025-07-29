@@ -16,6 +16,7 @@ CREATE TABLE cuentas (
 
 ```sql
 INSERT INTO cuentas (nombre, saldo) VALUES ('Juan', 1000), ('Ana', 1000);
+```
 
 ### Paso 2. Simular una transferencia exitosa
 ```sql
@@ -23,6 +24,7 @@ BEGIN;
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
 UPDATE cuentas SET saldo = saldo + 200 WHERE nombre = 'Ana';
 COMMIT;
+```
 
 ### Paso 3. Simular una falla y rollback
 ```sql
@@ -31,10 +33,12 @@ UPDATE cuentas SET saldo = saldo - 500 WHERE nombre = 'Juan';
  ERROR: en la siguiente sentencia, la cuenta de Carlos no existe
 UPDATE cuentas SET saldo = saldo + 500 WHERE nombre = 'Carlos';
 ROLLBACK;
-
+```
 
 ### Paso 4. Verifica que nada cambió
+```sql
 SELECT * FROM cuentas;
+```
 
 ## Ejercicio 2: Simulación de bloqueo concurrente.
 El escenario será una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
@@ -48,11 +52,14 @@ Preparación (En cualquier sesión, una sola vez):
 ```sql
 TRUNCATE TABLE cuentas;
 INSERT INTO cuentas (nombre, saldo) VALUES ('Juan', 1000), ('Ana', 1000);
+```
 
 Puedes verificar los saldos iniciales con:
 
 ```sql
 SELECT * FROM cuentas;
+```
+
 Salida Esperada:
  id | nombre | saldo
 ----+--------+-------
@@ -68,8 +75,9 @@ Sesión A (Terminal 1)
 
 ```sql
 BEGIN;
- Selecciona el saldo de Juan y bloquea la fila
+--Selecciona el saldo de Juan y bloquea la fila
 SELECT saldo FROM cuentas WHERE nombre = 'Juan' FOR UPDATE;
+```
 Salida (Sesión A):
  saldo
 -------
@@ -82,6 +90,7 @@ Explicación: La Sesión A ahora tiene un bloqueo exclusivo sobre la fila de 'Ju
 
 ```sql
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
+```
 
 Explicación: Esta actualización se realiza dentro de la transacción de la Sesión A. El saldo de Juan ahora es 800 dentro de esta transacción, pero los cambios aún no son permanentes en la base de datos y la fila sigue bloqueada por Sesión A.
  
@@ -90,6 +99,8 @@ Sesión B (Terminal 2)
 
 ```sql
 SELECT saldo FROM cuentas WHERE nombre = 'Juan';
+```
+
 Salida (Sesión B):
  saldo
 -------
@@ -102,6 +113,7 @@ Explicación: La Sesión B puede leer la fila. Observa que ve el saldo como 1000
 
 ```sql
 UPDATE cuentas SET saldo = saldo - 150 WHERE nombre = 'Juan';
+```
 
 Salida (Sesión B): Verás que este comando se queda esperando (o "colgado") indefinidamente.
 Explicación: La Sesión B está bloqueada porque la Sesión A tiene un bloqueo FOR UPDATE sobre esa fila. Sesión B esperará hasta que Sesión A libere su bloqueo.
@@ -111,6 +123,7 @@ Volver a Sesión A (Terminal 1)
 
 ```sql
 COMMIT;
+```
 
 Explicación: Al ejecutar COMMIT, la Sesión A guarda sus cambios permanentemente (el saldo de Juan ahora es 800) y, crucialmente, libera el bloqueo sobre la fila de 'Juan'.
 
@@ -124,7 +137,9 @@ Explicación: El UPDATE de la Sesión B ahora se ejecutó correctamente. El UPDA
 
 ### Paso 6. Verificación Final (En cualquier sesión, después de que ambas transacciones hayan terminado):
 
+```sql
 SELECT * FROM cuentas WHERE nombre = 'Juan';
+```
 Salida Esperada:
  id | nombre | saldo
 ----+--------+-------
@@ -147,16 +162,19 @@ Terminal A:
 BEGIN;
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 SELECT COUNT(*) FROM cuentas;
+```
  Mantén abierta la ventana
 
 Terminal B:
 ```sql
 INSERT INTO cuentas (nombre, saldo) VALUES ('Luis', 100);
+```
 
 De nuevo en Terminal A:
 ```sql
 SELECT COUNT(*) FROM cuentas; -- verás el nuevo registro con READ COMMITTED
 COMMIT;
+```
 
 Repite el mismo flujo usando REPEATABLE READ y compara resultados.
 
@@ -170,6 +188,7 @@ CREATE TABLE recursos (
   nombre TEXT
 );
 INSERT INTO recursos (nombre) VALUES ('A'), ('B');
+```
 
 ### Paso 2. Simula desde dos terminales
 
@@ -177,18 +196,18 @@ Terminal A:
 ```sql
 BEGIN;
 UPDATE recursos SET nombre = 'A1' WHERE id = 1;
- Espera aquí sin hacer COMMIT
-
+--Espera aquí sin hacer COMMIT
+```
 Terminal B:
 ```sql
 BEGIN;
 UPDATE recursos SET nombre = 'B1' WHERE id = 2;
-
+```
 De nuevo en Terminal A:
 ```sql
 UPDATE recursos SET nombre = 'A2' WHERE id = 2; -- queda esperando
-
+```
 Luego en Terminal B:
 ```sql
 UPDATE recursos SET nombre = 'B2' WHERE id = 1; -- PostgreSQL detectará el deadlock
-
+```
