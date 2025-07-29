@@ -23,15 +23,18 @@ sudo chown -R postgres:postgres /var/lib/postgresql
 Requisitos:
 -	PostgreSQL instalado (versión 13 o superior recomendada).
 -	Dos directorios para los datos:
+```
 /var/lib/postgresql/maestro (puede ser el main de una cluster normal)
 /var/lib/postgresql/esclavo (podemos llamarle replica)
+```
 -	Puertos separados: 5432 (maestro), 5433 (esclavo).
 
 ### Paso 1. Crear los directorios de datos
+```
 sudo mkdir -p /var/lib/postgresql/maestro
 sudo mkdir -p /var/lib/postgresql/esclavo
 sudo chown -R postgres:postgres /var/lib/postgresql
-
+```
 ### Paso 2. Inicializar el maestro
 sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestro
 
