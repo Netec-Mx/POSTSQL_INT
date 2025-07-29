@@ -141,10 +141,10 @@ Explicación: El UPDATE de la Sesión B ahora se ejecutó correctamente. El UPDA
 SELECT * FROM cuentas WHERE nombre = 'Juan';
 ```
 Salida Esperada:
- id | nombre | saldo
-----+--------+-------
-  1 | Juan   |   650
-(1 row)
+- id | nombre | saldo
+- ----+--------+-------
+-  1 | Juan   |   650
+- (1 row)
  
 
 ### Conclusión:
