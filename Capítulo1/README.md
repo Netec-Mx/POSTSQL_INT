@@ -30,7 +30,7 @@ COMMIT;
 ```sql
 BEGIN;
 UPDATE cuentas SET saldo = saldo - 500 WHERE nombre = 'Juan';
- ERROR: en la siguiente sentencia, la cuenta de Carlos no existe
+-- ERROR: en la siguiente sentencia, la cuenta de Carlos no existe
 UPDATE cuentas SET saldo = saldo + 500 WHERE nombre = 'Carlos';
 ROLLBACK;
 ```
