@@ -6,7 +6,7 @@ En el siguiente ejercicio practicarás diferentes escenarios de manejo de transa
 ### Paso 1. Crear tabla y datos de prueba
 psql -U postgres
 
-sql
+```sql
 CREATE TABLE cuentas (
   id SERIAL PRIMARY KEY,
   nombre TEXT,
