@@ -82,9 +82,10 @@ hot_standby = on
 
 
 ### Paso 8. Iniciar maestro y esclavo
+```
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo -l esclavo.log start
-
+```
 ### Paso 9.  Verificar replicación
 psql -p 5432 -c "SELECT * FROM pg_stat_replication;"
 
@@ -122,10 +123,11 @@ Requisitos:
 -	Puertos separados: 5432 (maestro), 5433 (esclavo).
 
 ### Paso 1. Crear los directorios de datos
+```
 sudo mkdir -p /var/lib/postgresql/maestro
 sudo mkdir -p /var/lib/postgresql/esclavo
 sudo chown -R postgres:postgres /var/lib/postgresql
-
+```
 ### Paso 2. Inicializar el maestro
 sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestro
 
@@ -133,12 +135,13 @@ sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestr
 Edíta el siguiente archivo:
 sudo nano /var/lib/postgresql/maestro/postgresql.conf
 Agrega o ajusta:
+```
 port = 5432
 wal_level = replica
 max_wal_senders = 10
 wal_keep_size = 64MB
 listen_addresses = '*'
-
+```
 ### Paso 4. Configurar pg_hba.conf del maestro
 sudo nano /var/lib/postgresql/maestro/pg_hba.conf
 Agrega:
@@ -168,12 +171,11 @@ Asegúrate de tener:
 port = 5433
 hot_standby = on
 
-
-
 ### Paso 8. Iniciar maestro y esclavo
+```
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo -l esclavo.log start
-
+```
 ### Paso 9.  Verificar replicación
 psql -p 5432 -c "SELECT * FROM pg_stat_replication;"
 
@@ -206,13 +208,13 @@ sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestr
 Edíta el siguiente archivo:
 sudo nano /var/lib/postgresql/maestro/postgresql.conf
 Agrega o ajusta:
-`
+```
 port = 5432
 wal_level = replica
 max_wal_senders = 10
 wal_keep_size = 64MB
 listen_addresses = '*'
-`
+```
 
 ### Paso 4. Configurar pg_hba.conf del maestro
 sudo nano /var/lib/postgresql/maestro/pg_hba.conf
