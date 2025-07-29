@@ -61,11 +61,11 @@ SELECT * FROM cuentas;
 ```
 
 Salida Esperada:
- id | nombre | saldo
-----+--------+-------
-  1 | Juan   |  1000
-  2 | Ana    |  1000
-(2 rows)
+- id | nombre | saldo
+- ----+--------+-------
+-  1 | Juan   |  1000
+-  2 | Ana    |  1000
+- (2 rows)
 
 ### Paso 2. Escenario de Bloqueo con SELECT ... FOR UPDATE
 En este ejemplo, la Sesión A intentará retirar dinero de la cuenta de Juan, y la Sesión B intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
