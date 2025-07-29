@@ -110,7 +110,7 @@ Utilizar la extensión pg_stat_statements para capturar y analizar el rendimient
  ### Paso 1: Habilitar pg_stat_statements
 
 Editar el archivo postgresql.conf (si tienes permisos de superusuario):
-# En Ubuntu, normalmente en:
+En Ubuntu, normalmente en:
 sudo nano /etc/postgresql/15/main/postgresql.conf
 Agrega o descomenta:
 shared_preload_libraries = 'pg_stat_statements'
