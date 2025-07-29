@@ -102,7 +102,7 @@ RESET enable_mergejoin;
 RESET enable_nestloop;
 ```
 
-Práctica Adicional (Opcional).
+## Práctica Adicional (Opcional).
 Uso de pg_stat_statements para detectar consultas costosas
 
 Utilizar la extensión pg_stat_statements para capturar y analizar el rendimiento de las consultas ejecutadas, identificando aquellas con mayor costo total, frecuencia o tiempo promedio.
