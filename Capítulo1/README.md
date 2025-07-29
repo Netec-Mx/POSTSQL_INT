@@ -12,6 +12,7 @@ CREATE TABLE cuentas (
   nombre TEXT,
   saldo NUMERIC
 );
+```
 
 ```sql
 INSERT INTO cuentas (nombre, saldo) VALUES ('Juan', 1000), ('Ana', 1000);
