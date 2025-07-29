@@ -39,15 +39,17 @@ Agrega:
 host replication replicador 127.0.0.1/32 md5
 ```
 
-### Paso 5. Crear usuario de replicación (si es que no existe).
+### Paso 5. Crear usuario de replicación (si no existe) y otorgar privilegios.
 Inicia el maestro en segundo plano:
 ```
-sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
+sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start 
 ```
 Crea el usuario replicador:
 psql -p 5432 -U postgres
 ```sql
 CREATE ROLE replicador WITH REPLICATION LOGIN ENCRYPTED PASSWORD 'abc123';
+GRANT USAGE ON SCHEMA public TO replicador;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO replicador;
 ```
 
 ### Paso 6. Inicializar el esclavo con pg_basebackup
