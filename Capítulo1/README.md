@@ -148,10 +148,10 @@ Salida Esperada:
  
 
 ### Conclusión:
-•	El comando SELECT ... FOR UPDATE adquirió un bloqueo exclusivo sobre la fila de la cuenta de Juan en la Sesión A.
-•	Esto impidió que la UPDATE concurrente de la Sesión B se ejecutara inmediatamente; Sesión B tuvo que esperar.
-•	Una vez que la Sesión A hizo COMMIT;, el bloqueo se liberó, permitiendo que la UPDATE de la Sesión B procediera y aplicara sus cambios.
-•	Gracias al bloqueo, evitamos que ambas transacciones intentaran modificar el mismo saldo basándose en un valor inicial obsoleto, garantizando que todas las operaciones se aplicaran secuencialmente.
+-	El comando SELECT ... FOR UPDATE adquirió un bloqueo exclusivo sobre la fila de la cuenta de Juan en la Sesión A.
+-	Esto impidió que la UPDATE concurrente de la Sesión B se ejecutara inmediatamente; Sesión B tuvo que esperar.
+-	Una vez que la Sesión A hizo COMMIT;, el bloqueo se liberó, permitiendo que la UPDATE de la Sesión B procediera y aplicara sus cambios.
+-	Gracias al bloqueo, evitamos que ambas transacciones intentaran modificar el mismo saldo basándose en un valor inicial obsoleto, garantizando que todas las operaciones se aplicaran secuencialmente.
 
 ## Ejercicio 3: Comparación de niveles de aislamiento
 
