@@ -52,8 +52,9 @@ listen_addresses = '*'
 ### Paso 4. Configurar pg_hba.conf del maestro
 sudo nano /var/lib/postgresql/maestro/pg_hba.conf
 Agrega:
+```
 host replication replicador 127.0.0.1/32 md5
-
+```
 ### Paso 5. Crear usuario de replicación (si es que no existe).
 Inicia el maestro en segundo plano:
 sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
