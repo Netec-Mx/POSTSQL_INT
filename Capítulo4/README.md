@@ -94,8 +94,8 @@ Pasos para restaurar desde un respaldo físico:
 
 ### Paso 5. Restaurar archivos WAL:
 	tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal
-•	Asegurarse de tener el restore_command bien definido.
-•	Opcional: si hay PITR colocar archivo recovery.signal en el nuevo $PGDATA.
+- Asegurarse de tener el restore_command bien definido.
+- Opcional: si hay PITR colocar archivo recovery.signal en el nuevo $PGDATA.
 
 ### Paso 6 (muy importante). Actualizar el propietario y permisos del directorio main
 	sudo chown postgres:postgres /var/lib/postgresql/16/main
