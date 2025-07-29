@@ -24,7 +24,7 @@ En donde:    host    replication     replicador      0.0.0.0/0     md5
 Recargar la configuración de PostgreSQL
 -	Después de modificar pg_hba.conf, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras:
 	Usando SQL (recomendado si puedes conectarte):
-	```sql
+```sql
 SELECT pg_reload_conf();
 ```
 
