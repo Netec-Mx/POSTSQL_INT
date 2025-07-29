@@ -77,7 +77,7 @@ Archivos generados del respaldo con pg_basebackup
 
 ## Ejercicio 2. Restarurar el clúster de PostgreSQL.
 
-Del ejercicio anterior restaure todo el clúster de PostgreSQL, después de que lo realice verifique las bases de datos y las tablas junto con sus datos existen y mantienen los datos originales.
+Del ejercicio anterior restaure todo el clúster de PostgreSQL, después verifique las bases de datos y las tablas junto con sus datos existen, para ver si se mantienen los datos originales.
 
 Pasos para restaurar desde un respaldo físico:
 ### Paso 1. Detener PostgreSQL:
