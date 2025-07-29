@@ -42,12 +42,13 @@ sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestr
 Edíta el siguiente archivo:
 sudo nano /var/lib/postgresql/maestro/postgresql.conf
 Agrega o ajusta:
+```
 port = 5432
 wal_level = replica
 max_wal_senders = 10
 wal_keep_size = 64MB
 listen_addresses = '*'
-
+```
 ### Paso 4. Configurar pg_hba.conf del maestro
 sudo nano /var/lib/postgresql/maestro/pg_hba.conf
 Agrega:
