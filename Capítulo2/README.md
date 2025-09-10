@@ -1,8 +1,8 @@
-# Laboratorio 2. Índices y Tipos de Datos en PostgreSQL
+# Práctica 2. Índices y tipos de datos en PostgreSQL
 
-## Ejercicio 1: Reseñas con TEXT y VARCHAR
+### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
-### Paso 1. Crear la tabla reseñas e insertar datos.
+**Paso 1.** Crea la tabla `reseñas` e inserta datos.
 
 ```sql
 CREATE TABLE reseñas (
@@ -22,7 +22,7 @@ SELECT
 FROM generate_series(1, 1000) i;
 ```
 
-### Paso 2. Crear los índices.
+**Paso 2.** Crea los índices.
 
 ```sql
 CREATE INDEX idx_autor ON reseñas(autor);
@@ -30,16 +30,16 @@ CREATE INDEX idx_comentarios_positivos ON reseñas(comentario)
 WHERE calificacion > 4;
 ```
 
-### Paso 3. Verificando los resultados.
+**Paso 3.** Verifica los resultados.
 
- Explicación: Esta consulta aprovecha el índice parcial si 'calificacion > 4',
- reduciendo el número de filas escaneadas. Se espera un Sequential Scan si no se usa índice.
-EXPLAIN ANALYZE SELECT * FROM reseñas WHERE calificacion > 4 AND comentario IS NOT NULL;
+Explicación: esta consulta aprovecha el índice parcial si `calificacion > 4`,
+ reduciendo el número de filas escaneadas. Se espera un `Sequential Scan` si no se usa el índice.
+`EXPLAIN ANALYZE SELECT * FROM reseñas WHERE calificacion > 4 AND comentario IS NOT NULL;`
 
 
-## Ejercicio 2: Manejo de encuestas con ARRAY y ENUM
+### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
 
-### Paso 1. Crear el tipo nivel_satisfaccion, la tabla encuestas, insertar datos y crear el índice spgist.
+### Paso 1. Crear el tipo nivel_satisfaccion, la tabla encuestas, insertar datos y crear el índice `spgist`.
 
 ```sql
 CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto');
@@ -63,13 +63,13 @@ FROM generate_series(1, 500);
 CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfaccion);
 ```
 
- Explicación: Esta consulta puede beneficiarse del índice SP-GiST en satisfaccion
+Explicación: esta consulta puede beneficiarse del índice `SP-GiST` en satisfaccion
  si el optimizador detecta que es más eficiente que un escaneo secuencial.
-EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';
+`EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';`
 
-## Ejercicio 3: Manejo de preferencias de usuario usando el tipo JSONB y el índice GIN.
+## Tarea 3. Manejo de preferencias de usuario usando el tipo `JSONB` y el índice `GIN`.
 
-### Paso 1. Crear los elementos necesarios para el ejercicio.
+**Paso 1.** Crea los elementos necesarios para el ejercicio.
 
 ```sql	
 CREATE TABLE usuarios (
@@ -79,7 +79,7 @@ CREATE TABLE usuarios (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
-### Paso 2. Insertar datos en la tabla.
+**Paso 2.** Inserta los datos en la tabla.
 
 ```sql
 INSERT INTO usuarios (nombre, preferencias)
@@ -92,38 +92,38 @@ SELECT
 FROM generate_series(1, 1000) i;
 ```
 
-### Paso 3. Crear los índices.
+**Paso 3.** Crea los índices.
 
 ```sql
-```
+
 CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
 ```
 
-### Paso 4. Usar Explain con Select para observar el comportamiento.
+**Paso 4.** Usar Explain con Select para observar el comportamiento.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';
 ```
 
- Explicación: Esta consulta utiliza el índice GIN para realizar búsquedas
- eficientes dentro del campo JSONB. Es mucho más rápido que escanear fila por fila.
+Explicación: esta consulta utiliza el índice `GIN` para realizar búsquedas
+ eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
 
 Comentarios de los pasos anteriores y el código:
 
-1.  CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
+1.  `CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));`
 Crea un índice basado en una expresión, no directamente sobre una columna, sino sobre el resultado de una operación sobre una columna.
 En este caso:
-preferencias es un campo de tipo JSONB.
-preferencias->>'tema' extrae el valor del campo "tema" como texto (por ejemplo, "oscuro" o "claro").
-El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del JSON.
-PostgreSQL no puede indexar directamente elementos internos de un JSONB con BTREE. Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
+preferencias es un campo de tipo `JSONB`.
+`preferencias->>'tema'` extrae el valor del campo "tema" como texto (por ejemplo, "oscuro" o "claro").
+El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del `JSON`.
+PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
 
-2.  SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';
+2.  `SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';`
 Busca todos los registros de la tabla usuarios donde el campo preferencias contiene el par clave-valor "tema": "oscuro".
-El operador @> es el operador de contención de JSONB en PostgreSQL.
-Esto significa que el campo preferencias debe tener al menos esa clave y valor. Puede tener más cosas, pero "tema": "oscuro" debe existir dentro del JSON.
+El operador `@>` es el operador de contención de `JSONB` en PostgreSQL.
+Esto significa que el campo preferencias debe tener al menos esa clave y valor. Puede tener más cosas, pero "tema": "oscuro" debe existir dentro del `JSON`.
 
-En este ejemplo, este JSONB SI califica:
+En este ejemplo, este `JSONB SI` califica:
 {
   "tema": "oscuro",
   "notificaciones": "push"
@@ -133,11 +133,11 @@ Pero este NO:
   "tema": "claro"
 }
 
-Se observa la compatibilidad con índices GIN, lo que permite búsquedas rápidas incluso dentro de estructuras complejas como JSON.
+Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas incluso dentro de estructuras complejas como `JSON`.
 
-## Ejercicio 4. Manejo de una tabla de Sensores con índice BRIN y BTREE
+### Tarea 4. Manejo de una tabla de Sensores con índice **BRIN** y **BTREE**
 
-### Paso 1. Crear los elementos necesarios para el ejercicio.
+**Paso 1.** Crea los elementos necesarios para el ejercicio.
 
 ```sql
 CREATE TABLE sensores (
@@ -148,7 +148,7 @@ CREATE TABLE sensores (
 );
 ```
 
-### Paso 2. Insertar los datos de prueba.
+**Paso 2.** Inserta los datos de prueba.
 
 ```sql
 INSERT INTO sensores (zona, temperatura, fecha)
@@ -159,14 +159,14 @@ SELECT
 FROM generate_series(1, 1000000) i;
 ```
 
-### Paso 3. Crear los índices brin y btree.
+**Paso 3.** Crea los índices **BRIN** y **BTREE**.
 
 ```sql
 CREATE INDEX idx_brin_fecha ON sensores USING brin (fecha);
 CREATE INDEX idx_btree_fecha ON sensores USING btree (fecha);
 ```
 
- Evaluación del espacio ocupado por los índices BTREE y BRIN:
+Evaluación del espacio ocupado por los índices **BTREE** y **BRIN**:
 
 ```sql
 SELECT indexrelid::regclass AS index_name, pg_size_pretty(pg_relation_size(indexrelid)) AS size
@@ -174,7 +174,7 @@ FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
 
- Explicación: Esta consulta debería aprovechar el índice BRIN si las fechas están ordenadas.
+Explicación: esta consulta debería aprovechar el índice **BRIN** si las fechas están ordenadas.
  El objetivo es reducir la cantidad de bloques leídos del disco.
 
 ```sql
@@ -183,7 +183,7 @@ SELECT * FROM sensores
 WHERE fecha BETWEEN now() - INTERVAL '2 days' AND now() - INTERVAL '1 day';
 ```
 
-### Paso 4. Revisar el espacio ocupado por los índices.
+**Paso 4.** Revisa el espacio ocupado por los índices.
 
 ```sql
 SELECT indexrelid::regclass AS index_name, 
@@ -192,15 +192,21 @@ FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
 
-Comentarios:
-Muestra el tamaño en disco de todos los índices asociados a la tabla sensores.
-pg_index: catálogo del sistema que almacena información sobre índices.
-indrelid = 'sensores'::regclass: filtra solo los índices de la tabla sensores.
-indexrelid::regclass: convierte el ID del índice a nombre legible (como idx_btree_fecha).
-pg_relation_size(indexrelid): obtiene el tamaño en bytes del índice.
-pg_size_pretty(...): convierte esos bytes a un formato legible como 12 MB, 180 kB, etc.
+**Comentarios**
 
-Preguntas adicionales del ejercicio.
+- Muestra el tamaño en disco de todos los índices asociados a la tabla sensores.
 
-¿El índice BRIN realmente ocupa menos espacio que BTREE?
-¿Qué tan costoso en disco seria mantener varios índices?
+- `pg_index`: catálogo del sistema que almacena información sobre índices.
+
+- `indrelid = 'sensores'::regclass`: filtra solo los índices de la tabla sensores.
+
+- `indexrelid::regclass`: convierte el ID del índice a nombre legible (como `idx_btree_fecha`).
+
+- `pg_relation_size(indexrelid)`: obtiene el tamaño en bytes del índice.
+
+- `pg_size_pretty(...)`: convierte esos bytes a un formato legible como 12 MB, 180 kB, etc.
+
+**Preguntas adicionales del ejercicio**
+
+¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
+¿Qué tan costoso en disco sería mantener varios índices?
