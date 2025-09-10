@@ -17,11 +17,11 @@ CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segur
 	`host    replication     replicador      0.0.0.0/0               md5`
 
 En donde:  
--	`host`: indica que la conexión es a través de `TCP/IP`.
--	`replication`: es un `pseudo-database` especial que se usa para conexiones de replicación.
--	`replicador`: es el nombre del usuario que creaste.
--	`0.0.0.0/0`: permite la conexión desde cualquier dirección IP. Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
--	`MD5`: especifica que se utilizará autenticación con contraseña `MD5`.
+- `host`: indica que la conexión es a través de `TCP/IP`.
+- `replication`: es un `pseudo-database` especial que se usa para conexiones de replicación.
+- `replicador`: es el nombre del usuario que creaste.
+- `0.0.0.0/0`: permite la conexión desde cualquier dirección IP. Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
+- `MD5`: especifica que se utilizará autenticación con contraseña `MD5`.
 
 **Paso 3.** Recarga la configuración de PostgreSQL
 -	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras.
@@ -54,8 +54,8 @@ En donde:
 	`sudo systemctl restart postgresql`
 
 **Paso 4.** Ejecutar `pg_basebackup`
--	Crear el directorio donde se harán los respaldos desde el usuario postgre:
--	`mdkir /var/lib/postgresql/respaldos`
+-	Crea el directorio donde se harán los respaldos desde el usuario postgre:
+	`mdkir /var/lib/postgresql/respaldos`
 -	Ahora, desde la máquina donde deseas almacenar el respaldo (que puede ser el mismo servidor o uno diferente, siempre que la red lo permita y `pg_hba.conf` esté configurado correctamente), puedes ejecutar desde la línea de comandos del shell tu comando `pg_basebackup`:
 `pg_basebackup -h tu_ip_servidor_primario -D /respaldos/pg -Ft -z -P -U usuario_replicador`
 
@@ -63,66 +63,61 @@ Ejemplo:
 `pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador`
 
 En donde:
-- En este caso `localhost` (es la máquina local)
--`h localhost`	Indica el host al que conectarse
-- Directorio de destino donde se almacenará el respaldo
--`D /var/lib/postgresql/respaldos`
--`F` `t`	Formato del respaldo: `t` significa `tarball` (archivo `.tar`)
--`z`	Comprime el respaldo generado (`gzip`). El archivo final será `.tar``.gz`
--`P`	Muestra una barra de progreso durante la copia
-- Este usuario de la base de datos debe tener permisos de replicación
--`U replicador`	Usuario de PostgreSQL que ejecuta la copia. 
+- En este caso, `localhost` es la máquina local.
+- `h localhost` indica el host al que conectarse.
+- `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
+- `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
+- `z`: comprime el respaldo generado (`gzip`). El archivo final será `.tar` `.gz`.
+- `P`: muestra una barra de progreso durante la copia.
+- `U replicador`: usuario de PostgreSQL que ejecuta la copia. El usuario de la base de datos debe tener permisos de replicación.
 
-Archivos generados del respaldo con pg_basebackup
+**Archivos generados del respaldo con `pg_basebackup`**
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
 - `pg_wal.tar.gz`: contiene los archivos del Write-Ahead Log (WAL) necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
-- `backup_manifest`: contiene metadatos sobre el backup, a lista de archivos incluidos, sumas de verificación y información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
+- `backup_manifest`: contiene metadatos sobre el backup, a lista de archivos incluidos, sumas de verificación e información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
-### Tarea 2. Restarurar el clúster de PostgreSQL.
+### Tarea 2. Restaurar el clúster de PostgreSQL
 
-Del ejercicio anterior, restaura todo el clúster de PostgreSQL, después verifica las bases de datos y las tablas junto con sus datos existen, para ver si se mantienen los datos originales.
+Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y si se mantienen los datos originales.
 
-Pasos para restaurar desde un respaldo físico:
-**Paso 1.** Detener PostgreSQL:
+**Paso 1.** Detén PostgreSQL:
 `sudo systemctl stop postgresql`
 
-**Paso 2.** Eliminar o renombrar el `$PGDATA` actual.
-	`mv  /var/lib/postgresql/16/main   /var/lib/postgresql/16/main_old`
+**Paso 2.** Elimina o renombra el `$PGDATA` actual:
+`mv  /var/lib/postgresql/16/main   /var/lib/postgresql/16/main_old`
 
-**Paso 3.** Crea el directorio `$PGDATA` desde el usuario `postgre`.
-	`mkdir  /var/lib/postgresql/16/main` 
+**Paso 3.** Crea el directorio `$PGDATA` desde el usuario `postgre`:
+`mkdir  /var/lib/postgresql/16/main` 
 
-**Paso 4.** Copiar desde el directorio de respaldos el respaldo físico.
-	`tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
+**Paso 4.** Copia desde el directorio de respaldos el respaldo físico.
+`tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 
-**Paso 5.** Restaurar archivos WAL.
+**Paso 5.** Restaura archivos WAL.
 	`tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal`
-- Asegurarse de tener el `restore_command` bien definido.
-- Opcional: si hay `PITR` colocar archivo `recovery.signal` en el nuevo `$PGDATA`.
+- Asegúrate de tener el `restore_command` bien definido.
+- Opcional: si hay `PITR` colocar el archivo `recovery.signal` en el nuevo `$PGDATA`.
 
-**Paso 6.** (muy importante). Actualizar el propietario y permisos del directorio `main`.
+**Paso 6** (muy importante). Actualiza el propietario y los permisos del directorio `main`.
 ```
 sudo chown postgres:postgres /var/lib/postgresql/16/main
 sudo chmod 700 /var/lib/postgresql/16/main
 ```
 
-**Paso 7.** Iniciar PostgreSQL:
+**Paso 7.** Inicia PostgreSQL:
 	`sudo systemctl start postgresql`
 
-**Paso 8.** Verificar logs y estado:
+**Paso 8.** Verifica `logs` y estado:
 	`tail -f /var/log/postgresql/postgresql-16-main.log`
 
-### Tarea 3. Uso de Autovaccum
+### Tarea 3. Uso de Autovaccum: configuración y monitoreo en PostgreSQL
+Comprenderás el funcionamiento del proceso Autovacuum en PostgreSQL, la configuración de sus parámetros y el monitoreo de su actividad.
 
-Configuración y Monitoreo de Autovacuum en PostgreSQL
-En este se comprenderá el funcionamiento del proceso Autovacuum en PostgreSQL, la configuración de sus parámetros y monitoreo de su actividad.
+**Requisitos**
+- PostgreSQL instalado (versión 9.6 o superior).
+- Acceso a una base de datos con permisos de superusuario o suficientes privilegios.
+- Herramienta `psql` o `pgAdmin` para conectarse a la base de datos.
 
-Requisitos
-•	PostgreSQL instalado (versión 9.6 o superior).
-•	Acceso a una base de datos con permisos de superusuario o suficientes privilegios.
-•	Herramienta `psql` o `pgAdmin` para conectarse a la base de datos.
-
-**Paso 1.** Verificación del estado de Autovacuum
+**Paso 1.** Verificación del estado de Autovacuum.
 1.	Conéctate a la base de datos PostgreSQL usando `psql`.
 psql -U postgres -d nombre_base_datos
 
@@ -139,7 +134,7 @@ SELECT name, setting, short_desc FROM pg_settings
 WHERE name LIKE 'autovacuum%' OR name LIKE 'vacuum%';
 ```
 
-**Paso 2.** Crea una tabla de prueba y generación de actividad
+**Paso 2.** Crea una tabla de prueba y generación de actividad.
 
 1.	Crea una tabla de prueba.
 
@@ -216,7 +211,7 @@ VACUUM (VERBOSE) laboratorio_autovacuum;
 ANALYZE VERBOSE laboratorio_autovacuum;
 ```
 
-**Paso 6.** Análisis de resultados
+**Paso 6.** Análisis de resultados.
 
 1.	Vuelve a consultar las estadísticas después de las operaciones.
 
