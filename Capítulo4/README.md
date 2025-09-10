@@ -5,47 +5,46 @@
 ### Tarea 1. Hacer un respaldo del clúster PostgreSQL
 
 **Paso 1.** Crea el usuario "replicador" con el rol de réplica.
-Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecutar el siguiente comando `SQL`:
-    `CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';`
+Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecutar el siguiente comando `SQL:
+CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';`
 
 **Paso 2.** Configura `pg_hba.conf` en el servidor primario
 -	El archivo `pg_hba.conf` controla la autenticación de clientes de PostgreSQL. Necesitas agregar una entrada que permita al usuario replicador conectarse desde la máquina donde ejecutarás `pg_basebackup`.
--	Localiza el archivo `pg_hba.conf`: Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL (por ejemplo, `/var/lib/postgresql/16/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo).
--	Edita el archivo `pg_hba.conf`: Abre el archivo con un editor de texto (requerirás permisos de superusuario, como `sudo`).
+-	Localiza el archivo `pg_hba.conf`. Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL; por ejemplo, `/var/lib/postgresql/16/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo (SO).
+-	Edita el archivo `pg_hba.conf`. Abre el archivo con un editor de texto (requerirás permisos de superusuario, como `sudo`).
 -	Agrega la siguiente línea (o similar):
 
-`host    replication     replicador      0.0.0.0/0               md5`
+	`host    replication     replicador      0.0.0.0/0               md5`
 
-En donde:    `host    replication     replicador      0.0.0.0/0     md5`
--	`host`: Indica que la conexión es a través de `TCP/IP`.
--	`replication`: Este es un `pseudo-database` especial que se usa para conexiones de replicación.
--	`replicador`: El nombre del usuario que creaste.
--	`0.0.0.0/0`: Permite la conexión desde cualquier dirección IP. Para un entorno de producción, es `ALTAMENTE RECOMENDABLE` que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
--	`md5`: Especifica que se utilizará autenticación con contraseña `MD5`.
+En donde:  
+-	`host`: indica que la conexión es a través de `TCP/IP`.
+-	`replication`: es un `pseudo-database` especial que se usa para conexiones de replicación.
+-	`replicador`: es el nombre del usuario que creaste.
+-	`0.0.0.0/0`: permite la conexión desde cualquier dirección IP. Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
+-	`MD5`: especifica que se utilizará autenticación con contraseña `MD5`.
 
-Recargar la configuración de PostgreSQL
--	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras:
+**Paso 3.** Recarga la configuración de PostgreSQL
+-	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras.
 	Usando `SQL` (recomendado si puedes conectarte):
-```sql
-SELECT pg_reload_conf();
-```
-
+	```sql
+	SELECT pg_reload_conf();
+	```
 -	Desde la línea de comandos (usando `systemd` o `init.d`):
 	`sudo systemctl reload postgresql`
 -	`O`, dependiendo de tu versión y SO, podría ser:
 	`sudo /etc/init.d/postgresql reload`
 
-**Paso 3.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`
--	Crea desde el usuario posgresql el directorio `/var/lib/postgresql/archive`
+**Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`
+-	Crea desde el usuario `posgresql` el directorio `/var/lib/postgresql/archive`
 -	`mkdir /var/lib/postgresql/archive`
 -	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WALs de rotación usando la variable `archive_command`
 -	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos	
- ```
-wal_level = replica
-archive_mode = on
-max_wal_senders = 2
-archive_command = cp %p /var/lib/postgresql/archive/%f
-```
+	```
+	wal_level = replica
+	archive_mode = on
+	max_wal_senders = 2
+	archive_command = cp %p /var/lib/postgresql/archive/%f
+	```
 
 -	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`
 	`%p`: Ruta completa del archivo WAL original.
