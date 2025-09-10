@@ -73,7 +73,7 @@ SELECT * FROM cuentas;
 En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
 
 `Sesión A (Terminal 1)`
-1.	Inicia una transacción y bloquea la cuenta de Juan para actualizarla:
+1.	Inicia una transacción y bloquea la cuenta de Juan para actualizarla.
 
 ```sql
 BEGIN;
@@ -81,10 +81,13 @@ BEGIN;
 SELECT saldo FROM cuentas WHERE nombre = 'Juan' FOR UPDATE;
 ```
 **Salida (Sesión A)**
- saldo
+ 
+```
+saldo
 -------
-  `1000
-(1 row)`
+  1000
+(1 row)
+```
 
 Explicación: la `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que Sesión A libere el bloqueo.
 
@@ -103,11 +106,13 @@ Sesión B (terminal 2)
 SELECT saldo FROM cuentas WHERE nombre = 'Juan';
 ```
 
-Salida (Sesión B):
- saldo
+**Salida (Sesión B)**
+```
+saldo
 -------
- ` 1000
-(1 row)`
+ 1000
+(1 row)
+```
 
 Explicación: la `Sesión B` puede leer la fila. Observa que ve el saldo como `1000`, no `800`, porque los cambios de la `Sesión A` todavía no han sido confirmados `(COMMIT)`.
 
