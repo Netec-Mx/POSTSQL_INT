@@ -39,7 +39,7 @@ Explicación: esta consulta aprovecha el índice parcial si `calificacion > 4`,
 
 ### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
 
-### Paso 1. Crear el tipo nivel_satisfaccion, la tabla encuestas, insertar datos y crear el índice `spgist`.
+**Paso 1.** Crear el tipo `nivel_satisfaccion`, la tabla `encuestas`, insertar datos y crear el índice `spgist`.
 
 ```sql
 CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto');
@@ -99,7 +99,7 @@ FROM generate_series(1, 1000) i;
 CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
 ```
 
-**Paso 4.** Usar Explain con Select para observar el comportamiento.
+**Paso 4.** Usa `Explain` con `Select` para observar el comportamiento.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';
@@ -108,17 +108,19 @@ EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}
 Explicación: esta consulta utiliza el índice `GIN` para realizar búsquedas
  eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
 
-Comentarios de los pasos anteriores y el código:
+**Comentarios de los pasos anteriores y el código**
 
 1.  `CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));`
+
 Crea un índice basado en una expresión, no directamente sobre una columna, sino sobre el resultado de una operación sobre una columna.
 En este caso:
-preferencias es un campo de tipo `JSONB`.
+`preferencias` es un campo de tipo `JSONB`.
 `preferencias->>'tema'` extrae el valor del campo "tema" como texto (por ejemplo, "oscuro" o "claro").
 El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del `JSON`.
 PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
 
 2.  `SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';`
+
 Busca todos los registros de la tabla usuarios donde el campo preferencias contiene el par clave-valor "tema": "oscuro".
 El operador `@>` es el operador de contención de `JSONB` en PostgreSQL.
 Esto significa que el campo preferencias debe tener al menos esa clave y valor. Puede tener más cosas, pero "tema": "oscuro" debe existir dentro del `JSON`.
@@ -128,14 +130,14 @@ En este ejemplo, este `JSONB SI` califica:
   "tema": "oscuro",
   "notificaciones": "push"
 }
-Pero este NO:
+Pero este `NO`:
 {
   "tema": "claro"
 }
 
 Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas incluso dentro de estructuras complejas como `JSON`.
 
-### Tarea 4. Manejo de una tabla de Sensores con índice **BRIN** y **BTREE**
+### Tarea 4. Manejo de una tabla de Sensores con índice `BRIN` y `BTREE`
 
 **Paso 1.** Crea los elementos necesarios para el ejercicio.
 
@@ -159,14 +161,14 @@ SELECT
 FROM generate_series(1, 1000000) i;
 ```
 
-**Paso 3.** Crea los índices **BRIN** y **BTREE**.
+**Paso 3.** Crea los índices `BRIN` y `BTREE`.
 
 ```sql
 CREATE INDEX idx_brin_fecha ON sensores USING brin (fecha);
 CREATE INDEX idx_btree_fecha ON sensores USING btree (fecha);
 ```
 
-Evaluación del espacio ocupado por los índices **BTREE** y **BRIN**:
+Evaluación del espacio ocupado por los índices `BTREE` y `BRIN`:
 
 ```sql
 SELECT indexrelid::regclass AS index_name, pg_size_pretty(pg_relation_size(indexrelid)) AS size
@@ -174,7 +176,7 @@ FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
 
-Explicación: esta consulta debería aprovechar el índice **BRIN** si las fechas están ordenadas.
+Explicación: esta consulta debería aprovechar el índice `BRIN` si las fechas están ordenadas.
  El objetivo es reducir la cantidad de bloques leídos del disco.
 
 ```sql
