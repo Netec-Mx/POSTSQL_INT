@@ -42,7 +42,7 @@ SELECT * FROM cuentas;
 
 ### Tarea 2. Simulación de bloqueo concurrente
 El escenario es una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
-Usaremos dos sesiones de `psql` para simular esto: Sesión A y Sesión B.
+Usaremos dos sesiones de `psql` para simular una `Sesión A` y una `Sesión B`.
 Antes de iniciar el laboratorio, lleva a cabo los pasos de preparación.
 
 #### Preparación (en cualquier sesión, una sola vez)
@@ -72,8 +72,8 @@ SELECT * FROM cuentas;
 **Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`
 En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
 
-`Sesión A (Terminal 1)`
-1.	Inicia una transacción y bloquea la cuenta de Juan para actualizarla.
+`Sesión A` (Terminal 1)
+inicia una transacción y bloquea la cuenta de Juan para actualizarla.
 
 ```sql
 BEGIN;
@@ -99,8 +99,8 @@ UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
 
 Explicación: esta actualización se realiza dentro de la transacción de la `Sesión A`. El saldo de Juan ahora es `800` dentro de esta transacción, pero los cambios aún no son permanentes en la base de datos y la fila sigue bloqueada por la `Sesión A`.
  
-Sesión B (terminal 2)
-1.	Intenta leer la cuenta de Juan (sin bloqueo):
+`Sesión B` (Terminal 2)
+intenta leer la cuenta de Juan (sin bloqueo).
 
 ```sql
 SELECT saldo FROM cuentas WHERE nombre = 'Juan';
@@ -114,19 +114,18 @@ saldo
 (1 row)
 ```
 
-Explicación: la `Sesión B` puede leer la fila. Observa que ve el saldo como `1000`, no `800`, porque los cambios de la `Sesión A` todavía no han sido confirmados `(COMMIT)`.
+Explicación: la `Sesión B` puede leer la fila. Observa que percibe el saldo como `1000`, no `800`, porque los cambios de la `Sesión A` todavía no se han confirmado `(COMMIT)`.
 
-**Paso 4.** Ahora, intenta realizar un retiro de la misma cuenta (lo que intentará adquirir un bloqueo `FOR UPDATE`):
+**Paso 4.** Ahora, intenta realizar un retiro de la misma cuenta (lo que intentará adquirir un bloqueo `FOR UPDATE`).
 
 ```sql
 UPDATE cuentas SET saldo = saldo - 150 WHERE nombre = 'Juan';
 ```
 
-Salida (Sesión B): verás que este comando se queda esperando (o "colgado") indefinidamente.
+Salida (`Sesión B`): verás que este comando se queda esperando (o "colgado") indefinidamente.
 Explicación: la `Sesión B` está bloqueada porque la `Sesión A` tiene un bloqueo `FOR UPDATE` sobre esa fila. La `Sesión B` esperará hasta que `Sesión A` libere su bloqueo.
 
-Volver a la `Sesión A` (Terminal 1)
-1.	Confirma la transacción:
+Vuelve a la `Sesión A` (Terminal 1) y confirma la transacción.
 
 ```sql
 COMMIT;
@@ -134,10 +133,9 @@ COMMIT;
 
 Explicación: al ejecutar `COMMIT`, la `Sesión A` guarda sus cambios permanentemente (el saldo de Juan ahora es `800`) y, crucialmente, libera el bloqueo sobre la fila de 'Juan'.
 
-Volver a la `Sesión B` (Terminal 2)
-Observa la salida: tan pronto como la `Sesión A` ejecuta `COMMIT`, el `UPDATE` de la `Sesión B` que estaba esperando finaliza su ejecución.
+Vuelve a la `Sesión B` (Terminal 2) y observa la salida: tan pronto como la `Sesión A` ejecuta `COMMIT`, el `UPDATE` de la `Sesión B` que estaba esperando finaliza su ejecución.
 
-Salida (Sesión B):
+Salida (`Sesión B`):
 `UPDATE 1`
 Explicación: el `UPDATE` de la `Sesión B` ahora se ejecutó correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` vio después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan será `800 - 150 = 650`.
 
@@ -158,7 +156,7 @@ SELECT * FROM cuentas WHERE nombre = 'Juan';
 ## Resultado esperado
 -	El comando `SELECT ... FOR UPDATE` adquirió un bloqueo exclusivo sobre la fila de la cuenta de Juan en la `Sesión A`.
 -	Esto impidió que la `UPDATE` concurrente de la `Sesión B` se ejecutara inmediatamente; la `Sesión B` tiene que esperar.
--	Una vez que la `Sesión A` hizo `COMMIT`;, el bloqueo se liberó, permitiendo que la `UPDATE` de la `Sesión B procediera y aplicara sus cambios.
+-	Una vez que la `Sesión A` hizo `COMMIT`, el bloqueo se liberó, permitiendo que la `UPDATE` de la `Sesión B` procediera y aplicara sus cambios.
 -	Gracias al bloqueo, evitamos que ambas transacciones intentaran modificar el mismo saldo basándose en un valor inicial obsoleto, garantizando que todas las operaciones se aplicaran secuencialmente.
 
 ### Tarea 3. Comparación de niveles de aislamiento
@@ -178,17 +176,17 @@ Terminal B:
 INSERT INTO cuentas (nombre, saldo) VALUES ('Luis', 100);
 ```
 
-De nuevo en Terminal A:
+De nuevo en `Terminal A`:
 ```sql
 SELECT COUNT(*) FROM cuentas; -- verás el nuevo registro con READ COMMITTED
 COMMIT;
 ```
 
-Repite el mismo flujo usando `REPEATABLE READ` y compara resultados.
+Repite el mismo flujo usando `REPEATABLE READ` y compara los resultados.
 
 ### Tarea 4. Simulación de Deadlock
 
-**Paso 1.** Crea tabla para el experimento.
+**Paso 1.** Crea una tabla para el experimento.
 
 ```sql
 CREATE TABLE recursos (
@@ -198,24 +196,24 @@ CREATE TABLE recursos (
 INSERT INTO recursos (nombre) VALUES ('A'), ('B');
 ```
 
-**Paso 2.** Simula desde dos terminales
+**Paso 2.** Simula desde dos terminales.
 
-Terminal A:
+`Terminal A`:
 ```sql
 BEGIN;
 UPDATE recursos SET nombre = 'A1' WHERE id = 1;
 --Espera aquí sin hacer COMMIT
 ```
-Terminal B:
+`Terminal B`:
 ```sql
 BEGIN;
 UPDATE recursos SET nombre = 'B1' WHERE id = 2;
 ```
-De nuevo en Terminal A:
+De nuevo en `Terminal A`:
 ```sql
 UPDATE recursos SET nombre = 'A2' WHERE id = 2; -- queda esperando
 ```
-Luego en Terminal B:
+Luego en `Terminal B`:
 ```sql
 UPDATE recursos SET nombre = 'B2' WHERE id = 1; -- PostgreSQL detectará el deadlock
 ```
