@@ -148,8 +148,7 @@ LIMIT 5;
 - `mean_time`: tiempo promedio por llamada.
 - `rows`: total de filas devueltas.
 
-**Paso 5.** Resetear estadísticas (opcional)
-Puedes reiniciar el contador de estadísticas:
+**Paso 5.** Puedes reiniciar el contador de estadísticas (opcional).
 
 ```sql
 SELECT pg_stat_statements_reset();
@@ -158,5 +157,5 @@ SELECT pg_stat_statements_reset();
 **Recomendación**
 - Úsalo junto con `auto_explain` para registrar planes automáticos en el `log`.
 - Ideal para entornos de desarrollo y pruebas antes de producción.
-- No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por overhead mínimo (~1-2%).
+- No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por `overhead` mínimo `(~1-2%)`.
 
