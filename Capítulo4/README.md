@@ -47,8 +47,8 @@ En donde:
 	```
 
 -	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`
-	`%p`: Ruta completa del archivo WAL original.
-	`%f`: Nombre del archivo WAL.
+	- `%p`: ruta completa del archivo WAL original.
+	- `%f`: nombre del archivo WAL.
 -	La variable `max_wal_senders` define cuántos procesos de envío de `WAL (Write-Ahead Log)` pueden ejecutarse simultáneamente. 
 -	Después de cambiar estos parámetros, reinicia PostgreSQL:
 	`sudo systemctl restart postgresql`
