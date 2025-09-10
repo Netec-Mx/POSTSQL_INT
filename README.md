@@ -4,25 +4,25 @@
 
 ## Plataforma de laboratorios
 
-Bienvenido a la **plataforma de laboratorios** del curso **PostgreSQL Intermedio**. Aquí podrás explorar diferentes tecnologías a través de prácticas guiadas. ¡Desarrolla tus habilidades y lleva tus conocimientos al siguiente nivel!
+Te damos la bienvenida a la **plataforma de laboratorios** del curso **PostgreSQL Intermedio**. Aquí podrás explorar diferentes tecnologías a través de prácticas guiadas. ¡Desarrolla tus habilidades y lleva tus conocimientos al siguiente nivel!
 
 ## Lista de laboratorios
 
-Cada uno de estos laboratorios están diseñados para ofrecerte una experiencia práctica. Haz clic en los enlaces para comenzar.
+Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia práctica. Haz clic en los enlaces para comenzar.
 
-01. ### [Práctica 1. Manejo de transacciones](./Capítulo1/README.md)
+### [Práctica 1. Manejo de transacciones](./Capítulo1/README.md)
     - ⏱️ **Duración estimada**: 60 min.
 
-02. ### [Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL](./Capítulo2/README.md)
+### [Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL](./Capítulo2/README.md)
     - ⏱️ **Duración estimada**: 120 min.
 
-03. ### [Práctica 3. Afinación de consultas y funciones](./Capítulo3/README.md)
+### [Práctica 3. Afinación de consultas y funciones](./Capítulo3/README.md)
     - ⏱️ **Duración estimada**: 90 min.
    
-04. ### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
+### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
     - ⏱️ **Duración estimada**: 120 min.
 
-05. ### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
+### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
     - ⏱️ **Duración estimada**: 120 min.
 
 ---
