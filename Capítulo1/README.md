@@ -3,8 +3,8 @@
 ### Tarea 1. Transferencia bancaria con rollback controlado
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
 
-**Paso 1.** Crear tabla y datos de prueba
-psql -U postgres
+**Paso 1.** Crea una tabla y datos de prueba
+`psql -U postgres`
 
 ```sql
 CREATE TABLE cuentas (
@@ -18,7 +18,7 @@ CREATE TABLE cuentas (
 INSERT INTO cuentas (nombre, saldo) VALUES ('Juan', 1000), ('Ana', 1000);
 ```
 
-**Paso 2.** Simular una transferencia exitosa
+**Paso 2.** Simula una transferencia exitosa
 ```sql
 BEGIN;
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
@@ -26,7 +26,7 @@ UPDATE cuentas SET saldo = saldo + 200 WHERE nombre = 'Ana';
 COMMIT;
 ```
 
-**Paso 3.** Simular una falla y rollback
+**Paso 3.** Simula una falla y `rollback`
 ```sql
 BEGIN;
 UPDATE cuentas SET saldo = saldo - 500 WHERE nombre = 'Juan';
@@ -41,11 +41,11 @@ SELECT * FROM cuentas;
 ```
 
 ### Tarea 2. Simulación de bloqueo concurrente
-El escenario será una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
-Usaremos dos sesiones de psql para simular esto: Sesión A y Sesión B.
-Antes de iniciar el laboratorio lleve a cabo los pasos de preparación:
+El escenario es una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
+Usaremos dos sesiones de `psql` para simular esto: Sesión A y Sesión B.
+Antes de iniciar el laboratorio, lleva a cabo los pasos de preparación.
 
-Preparación (En cualquier sesión, una sola vez):
+#### Preparación (en cualquier sesión, una sola vez)
 
 **Paso 1.** Primero, limpia la tabla cuentas y agrega los datos:
 
@@ -60,17 +60,17 @@ Puedes verificar los saldos iniciales con:
 SELECT * FROM cuentas;
 ```
 
-Salida Esperada:
+Salida esperada
 - id | nombre | saldo
 - ----+--------+-------
 -  1 | Juan   |  1000
 -  2 | Ana    |  1000
 - (2 rows)
 
-**Paso 2.** Escenario de Bloqueo con SELECT ... FOR UPDATE
-En este ejemplo, la Sesión A intentará retirar dinero de la cuenta de Juan, y la Sesión B intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
+**Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`
+En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
 
-Sesión A (Terminal 1)
+`Sesión A (Terminal 1)`
 1.	Inicia una transacción y bloquea la cuenta de Juan para actualizarla:
 
 ```sql
