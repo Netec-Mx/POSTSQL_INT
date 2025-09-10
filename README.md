@@ -11,19 +11,19 @@ Te damos la bienvenida a la **plataforma de laboratorios** del curso **PostgreSQ
 Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia práctica. Haz clic en los enlaces para comenzar.
 
 ### [Práctica 1. Manejo de transacciones](./Capítulo1/README.md)
-    - ⏱️ **Duración estimada**: 60 min.
+- ⏱️ **Duración estimada**: 60 min.
 
 ### [Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL](./Capítulo2/README.md)
-    - ⏱️ **Duración estimada**: 120 min.
+- ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 3. Afinación de consultas y funciones](./Capítulo3/README.md)
-    - ⏱️ **Duración estimada**: 90 min.
+- ⏱️ **Duración estimada**: 90 min.
    
 ### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
-    - ⏱️ **Duración estimada**: 120 min.
+- ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
-    - ⏱️ **Duración estimada**: 120 min.
+- ⏱️ **Duración estimada**: 120 min.
 
 ---
 ## 📬 **Contacto y más información**
