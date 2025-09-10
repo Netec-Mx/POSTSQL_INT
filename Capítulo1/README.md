@@ -60,12 +60,14 @@ Puedes verificar los saldos iniciales con:
 SELECT * FROM cuentas;
 ```
 
-Salida esperada
-- id | nombre | saldo
-- ----+--------+-------
--  1 | Juan   |  1000
--  2 | Ana    |  1000
-- (2 rows)
+**Salida esperada**
+```
+   id | nombre | saldo
+   ----+--------+-------
+    1 | Juan   |  1000
+    2 | Ana    |  1000
+   (2 rows)
+```
 
 **Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`
 En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
@@ -81,8 +83,8 @@ SELECT saldo FROM cuentas WHERE nombre = 'Juan' FOR UPDATE;
 Salida (Sesión A):
  saldo
 -------
-  1000
-(1 row)
+  `1000
+(1 row)`
 
 Explicación: La Sesión A ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que Sesión A libere el bloqueo.
 
