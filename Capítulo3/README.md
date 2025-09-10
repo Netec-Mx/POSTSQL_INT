@@ -27,12 +27,12 @@ EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
 CREATE INDEX idx_categoria ON productos(categoria);
 ```
 
-**Paso 4.** Ejecuta el Analize con índice y compara los resultados.
+**Paso 4.** Ejecuta `Analize` con el índice y compara los resultados.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
 ```
-Compara Seq Scan vs Index Scan.
+Compara `Seq Scan` con `Index Scan`.
 
 
 ### Tarea 2. Afinar una consulta lenta reescribiéndola
@@ -45,7 +45,7 @@ WHERE categoria IN (
 );
 ```
 
-**Paso 2.** Consulta optimizada con JOIN.
+**Paso 2.** Consulta optimizada con `JOIN`.
 ```sql
 SELECT DISTINCT p1.nombre
 FROM productos p1
@@ -53,10 +53,10 @@ JOIN productos p2 ON p1.categoria = p2.categoria
 WHERE p2.precio > 500000;
 ```
 
-**Paso 3.** Compara con un Analyze los resultados.
+**Paso 3.** Compara con `Analyze` los resultados.
 
 
-### Tarea 3. Crear una vista materializada para acelerar reportes.
+### Tarea 3. Crear una vista materializada para acelerar reportes
 
 **Paso 1.** Crea la vista.
 ```sql
@@ -71,21 +71,21 @@ GROUP BY categoria;
 SELECT * FROM resumen_categoria ORDER BY precio_promedio DESC LIMIT 5;
 ```
 
-**Paso 3.** Refrescar la vista y comprobar los cambios:
+**Paso 3.** Refresca la vista y comprueba los cambios.
 ```sql
 REFRESH MATERIALIZED VIEW resumen_categoria;
 ```
 
-### Tarea 4. Forzar uso de Nested Loop y analizar el rendimiento.
+### Tarea 4. Forzar uso de `Nested Loop` y analizar el rendimiento.
 
-**Paso 1.** Establecer el ambiente del ejercicio.
+**Paso 1.** Establece el ambiente del ejercicio.
 
 ```sql
 SET enable_hashjoin = off;
 SET enable_mergejoin = off;
 ```
 
-**Paso 2.** Verificar con Analize el comportamiento del nested loop.
+**Paso 2.** Verifica con `Analize` el comportamiento del `nested loop`.
 
 ```sql
 EXPLAIN ANALYZE
@@ -95,44 +95,44 @@ JOIN productos p2 ON p1.categoria = p2.categoria
 WHERE p1.precio < 100 AND p2.precio > 1000;
 ```
 
-**Paso 3.** Restablecer variables de configuración:
+**Paso 3.** Restablece variables de configuración.
 ```sql
 RESET enable_hashjoin;
 RESET enable_mergejoin;
 RESET enable_nestloop;
 ```
 
-### Tarea adicional (opcional)
-Uso de pg_stat_statements para detectar consultas costosas
+### Tarea adicional (opcional). Uso de `pg_stat_statements` para detectar consultas costosas
 
-Utilizar la extensión pg_stat_statements para capturar y analizar el rendimiento de las consultas ejecutadas, identificando aquellas con mayor costo total, frecuencia o tiempo promedio.
+Utiliza la extensión `pg_stat_statements` para capturar y analizar el rendimiento de las consultas ejecutadas, identificando aquellas con mayor costo total, frecuencia o tiempo promedio.
 
-**Paso 1.** Habilitar pg_stat_statements
+**Paso 1.** Habilita `pg_stat_statements`.
 
-Editar el archivo postgresql.conf (si tienes permisos de superusuario):
+Edita el archivo `postgresql.conf` (si tienes permisos de superusuario).
+
 En Ubuntu, normalmente en:
-sudo nano /etc/postgresql/15/main/postgresql.conf
+`sudo nano /etc/postgresql/15/main/postgresql.conf`
 Agrega o descomenta:
-shared_preload_libraries = 'pg_stat_statements'
+`shared_preload_libraries = 'pg_stat_statements'`
 
 Reinicia PostgreSQL:
-sudo systemctl restart postgresql
+`sudo systemctl restart postgresql`
 
-**Paso 2.** Crear la extensión en la base de datos
+**Paso 2.** Crea la extensión en la base de datos.
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 ```
 
-**Paso 3.** Ejecuta algunas consultas para que se registren
+**Paso 3.** Ejecuta algunas consultas para que se registren.
 
-Consultas de prueba
+Consultas de prueba:
 ```sql
 SELECT COUNT(*) FROM productos WHERE precio > 500;
 SELECT AVG(precio) FROM productos WHERE categoria = 'Categoria 3';
 SELECT * FROM productos WHERE nombre ILIKE '%123%';
 ```
 
-**Paso 4.** Consulta estadísticas
+**Paso 4.** Consulta estadísticas.
 
 ```sql
 SELECT query, calls, total_time, mean_time, rows
