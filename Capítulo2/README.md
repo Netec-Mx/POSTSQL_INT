@@ -137,7 +137,7 @@ Pero este `NO`:
 
 Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas incluso dentro de estructuras complejas como `JSON`.
 
-### Tarea 4. Manejo de una tabla de Sensores con índice `BRIN` y `BTREE`
+### Tarea 4. Manejo de una tabla de sensores con índice `BRIN` y `BTREE`
 
 **Paso 1.** Crea los elementos necesarios para el ejercicio.
 
