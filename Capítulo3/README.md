@@ -22,7 +22,7 @@ FROM generate_series(1, 100000) AS i;
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
 ```
 
-**Paso 3.** Crea el índice
+**Paso 3.** Crea el índice.
 ```sql
 CREATE INDEX idx_categoria ON productos(categoria);
 ```
