@@ -5,7 +5,7 @@
 ### Tarea 1. Hacer un respaldo del clúster PostgreSQL
 
 **Paso 1.** Crea el usuario "replicador" con el rol de réplica.
-Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecutar el siguiente comando `SQL:
+Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecuta el siguiente comando `SQL:
 CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';`
 
 **Paso 2.** Configura `pg_hba.conf` en el servidor primario.
