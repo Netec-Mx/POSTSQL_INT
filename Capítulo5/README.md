@@ -1,4 +1,13 @@
 # Práctica 5. Replicación
+## Objetivos
+Al finalizar la práctica, serás capaz de:
+-  Practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación
+
+## Duración aproximada
+- 120 minutos.
+
+## Objetivo visual
+
 ## Instrucciones
 
 ### Tarea 1. Configurar replicación del maestro-esclavo local
