@@ -111,7 +111,7 @@ sudo chmod 700 /var/lib/postgresql/16/main
 **Paso 8.** Verifica `logs` y estado:
 	`tail -f /var/log/postgresql/postgresql-16-main.log`
 
-### Tarea 3. Uso de Autovaccum: configuración y monitoreo en PostgreSQL
+### Tarea 3. Uso de Autovacuum: configuración y monitoreo en PostgreSQL
 Comprenderás el funcionamiento del proceso Autovacuum en PostgreSQL, la configuración de sus parámetros y el monitoreo de su actividad.
 
 **Requisitos**
