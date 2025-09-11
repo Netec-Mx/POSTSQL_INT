@@ -1,5 +1,5 @@
 # Práctica 3. Afinación de SQL
-## Objetivos
+## Objetivo
 Al finalizar la práctica, serás capaz de:
 - Aplicar funciones de agregación y escalares en consultas SQL sobre PostgreSQL.
 
