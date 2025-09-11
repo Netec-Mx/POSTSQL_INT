@@ -1,10 +1,9 @@
 # Práctica 1. Manejo de transacciones
 
-### Tarea 1. Transferencia bancaria con rollback controlado
+### Tarea 1. Transferencia bancaria con `rollback` controlado
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
 
-**Paso 1.** Crea una tabla y datos de prueba
-`psql -U postgres`
+**Paso 1.** Crea una tabla y datos de prueba `psql -U postgres`.
 
 ```sql
 CREATE TABLE cuentas (
@@ -18,7 +17,7 @@ CREATE TABLE cuentas (
 INSERT INTO cuentas (nombre, saldo) VALUES ('Juan', 1000), ('Ana', 1000);
 ```
 
-**Paso 2.** Simula una transferencia exitosa
+**Paso 2.** Simula una transferencia exitosa.
 ```sql
 BEGIN;
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
@@ -26,7 +25,7 @@ UPDATE cuentas SET saldo = saldo + 200 WHERE nombre = 'Ana';
 COMMIT;
 ```
 
-**Paso 3.** Simula una falla y `rollback`
+**Paso 3.** Simula una falla y `rollback`.
 ```sql
 BEGIN;
 UPDATE cuentas SET saldo = saldo - 500 WHERE nombre = 'Juan';
@@ -35,7 +34,7 @@ UPDATE cuentas SET saldo = saldo + 500 WHERE nombre = 'Carlos';
 ROLLBACK;
 ```
 
-**Paso 4.** Verifica que nada cambió
+**Paso 4.** Verifica que nada cambió.
 ```sql
 SELECT * FROM cuentas;
 ```
@@ -69,7 +68,8 @@ SELECT * FROM cuentas;
    (2 rows)
 ```
 
-**Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`
+**Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`.
+
 En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
 
 `Sesión A` (Terminal 1)
@@ -89,7 +89,7 @@ saldo
 (1 row)
 ```
 
-Explicación: la `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que Sesión A libere el bloqueo.
+Explicación: la `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que la `Sesión A` libere el bloqueo.
 
 **Paso 3.** Ahora, simula una operación de retiro en esta misma sesión.
 
