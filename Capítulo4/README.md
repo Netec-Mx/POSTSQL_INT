@@ -36,8 +36,8 @@ En donde:
 
 **Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`.
 -	Crea desde el usuario `posgresql` el directorio `/var/lib/postgresql/archive`.
-	````
-	mkdir /var/lib/postgresql/archive`
+	```
+	mkdir /var/lib/postgresql/archive
 	```
 -	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WALs de rotación usando la variable `archive_command`.
 -	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos.
