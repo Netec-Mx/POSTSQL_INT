@@ -7,9 +7,9 @@
 -	PostgreSQL instalado (versión 13 o superior recomendada).
 -	Dos directorios para los datos:
 
-    `/var/lib/postgresql/maestro` (puede ser el `main` de un `cluster` normal)
+    `/var/lib/postgresql/maestro` (puede ser el `main` de un `cluster` normal).
 
-    `/var/lib/postgresql/esclavo` (podemos llamarle `replica`)
+    `/var/lib/postgresql/esclavo` (podemos llamarle `replica`).
 -	Puertos separados: 5432 (maestro), 5433 (esclavo).
 
 **Paso 1.** Crea los directorios de datos.
@@ -25,7 +25,7 @@ sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestr
 
 **Paso 3.** Configura el `postgresql.conf` del maestro.
 
-Edita el siguiente archivo: `sudo nano /var/lib/postgresql/maestro/postgresql.conf`
+Edita el siguiente archivo: `sudo nano /var/lib/postgresql/maestro/postgresql.conf`.
 
 Agrega o ajusta:
 ```
@@ -36,7 +36,7 @@ wal_keep_size = 64MB
 listen_addresses = '*'
 ```
 
-**Paso 4.** Configura el `pg_hba.conf` del maestro
+**Paso 4.** Configura el `pg_hba.conf` del maestro.
 
 ```
 sudo nano /var/lib/postgresql/maestro/pg_hba.conf
