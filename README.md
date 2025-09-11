@@ -1,6 +1,6 @@
 <img src="images/neteclogo.png" alt="logo" width="300"/>
 
-# PostgreSQL Intermedio
+# PostgreSQL intermedio
 
 ## Plataforma de laboratorios
 
