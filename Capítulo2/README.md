@@ -1,5 +1,5 @@
 # Práctica 2. Índices y tipos de datos en PostgreSQL
-
+## Instrucciones
 ### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
 **Paso 1.** Crea la tabla `reseñas` e inserta los inserta datos.
