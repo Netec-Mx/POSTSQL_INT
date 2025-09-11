@@ -131,21 +131,27 @@ PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `B
 
 2.  `SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';`
 
-Busca todos los registros de la tabla usuarios donde el campo preferencias contiene el par clave-valor "tema": "oscuro".
-El operador `@>` es el operador de contención de `JSONB` en PostgreSQL.
-Esto significa que el campo preferencias debe tener al menos esa clave y valor. Puede tener más cosas, pero "tema": "oscuro" debe existir dentro del `JSON`.
+Busca todos los registros de la tabla `usuarios` donde el campo preferencias contiene el par clave-valor `"tema": "oscuro"`.
 
-En este ejemplo, este `JSONB SI` califica:
+El operador `@>` es el operador de contención de `JSONB` en PostgreSQL.
+
+Esto significa que el campo `preferencias` debe tener al menos esa clave y valor. Puede tener más elementos, pero `"tema": "oscuro"` debe existir dentro del `JSON`.
+
+En este ejemplo, este `JSONB` **sí** califica:
+```
 {
   "tema": "oscuro",
   "notificaciones": "push"
 }
-Pero este `NO`:
+```
+
+Pero este **no**:
+```
 {
   "tema": "claro"
 }
-
-Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas incluso dentro de estructuras complejas como `JSON`.
+```
+Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas, incluso dentro de estructuras complejas como `JSON`.
 
 ### Tarea 4. Manejo de una tabla de sensores con índice `BRIN` y `BTREE`
 
@@ -216,7 +222,7 @@ WHERE indrelid = 'sensores'::regclass;
 
 - `pg_relation_size(indexrelid)`: obtiene el tamaño en bytes del índice.
 
-- `pg_size_pretty(...)`: convierte esos bytes a un formato legible como 12 MB, 180 kB, etc.
+- `pg_size_pretty(...)`: convierte esos bytes a un formato legible como 12 MB, 180 kB, etcétera.
 
 **Preguntas adicionales del ejercicio**
 
