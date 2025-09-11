@@ -8,7 +8,7 @@
 Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecutar el siguiente comando `SQL:
 CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';`
 
-**Paso 2.** Configura `pg_hba.conf` en el servidor primario
+**Paso 2.** Configura `pg_hba.conf` en el servidor primario.
 -	El archivo `pg_hba.conf` controla la autenticación de clientes de PostgreSQL. Necesitas agregar una entrada que permita al usuario replicador conectarse desde la máquina donde ejecutarás `pg_basebackup`.
 -	Localiza el archivo `pg_hba.conf`. Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL; por ejemplo, `/var/lib/postgresql/16/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo (SO).
 -	Edita el archivo `pg_hba.conf`. Abre el archivo con un editor de texto (requerirás permisos de superusuario, como `sudo`).
