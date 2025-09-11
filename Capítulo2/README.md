@@ -196,7 +196,7 @@ WHERE indrelid = 'sensores'::regclass;
 
 **Comentarios**
 
-- Muestra el tamaño en disco de todos los índices asociados a la tabla sensores.
+- Muestra el tamaño en disco de todos los índices asociados a la tabla `sensores`.
 
 - `pg_index`: catálogo del sistema que almacena información sobre índices.
 
