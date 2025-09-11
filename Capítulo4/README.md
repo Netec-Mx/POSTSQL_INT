@@ -34,11 +34,11 @@ En donde:
 -	`O`, dependiendo de tu versión y SO, podría ser:
 	`sudo /etc/init.d/postgresql reload`
 
-**Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`
--	Crea desde el usuario `posgresql` el directorio `/var/lib/postgresql/archive`
+**Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`.
+-	Crea desde el usuario `posgresql` el directorio `/var/lib/postgresql/archive`.
 -	`mkdir /var/lib/postgresql/archive`
--	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WALs de rotación usando la variable `archive_command`
--	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos	
+-	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WALs de rotación usando la variable `archive_command`.
+-	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos.
 	```
 	wal_level = replica
 	archive_mode = on
@@ -46,12 +46,12 @@ En donde:
 	archive_command = cp %p /var/lib/postgresql/archive/%f
 	```
 
--	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`
+-	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`.
 	- `%p`: ruta completa del archivo WAL original.
 	- `%f`: nombre del archivo WAL.
 -	La variable `max_wal_senders` define cuántos procesos de envío de `WAL (Write-Ahead Log)` pueden ejecutarse simultáneamente. 
 -	Después de cambiar estos parámetros, reinicia PostgreSQL:
-	`sudo systemctl restart postgresql`
+	`sudo systemctl restart postgresql`.
 
 **Paso 4.** Ejecuta `pg_basebackup`
 -	Crea el directorio donde se harán los respaldos desde el usuario postgre:
