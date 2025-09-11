@@ -1,5 +1,5 @@
 # Práctica 5. Replicación
-## Objetivos
+## Objetivo
 Al finalizar la práctica, serás capaz de:
 -  Practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación
 
