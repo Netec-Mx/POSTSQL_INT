@@ -6,6 +6,8 @@ Al finalizar la práctica, serás capaz de:
 ## Duración aproximada
 - 60 minutos.
 
+## Objetivo visual
+
 ## Instrucciones
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
