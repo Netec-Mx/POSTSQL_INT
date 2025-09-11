@@ -47,7 +47,7 @@ Antes de iniciar el laboratorio, lleva a cabo los pasos de preparación.
 
 #### Preparación (en cualquier sesión, una sola vez)
 
-**Paso 1.** Primero, limpia la tabla cuentas y agrega los datos:
+**Paso 1.** Primero, limpia la tabla `cuentas` y agrega los datos:
 
 ```sql
 TRUNCATE TABLE cuentas;
