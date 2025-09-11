@@ -105,18 +105,23 @@ psql -p 5432 -c "SELECT * FROM pg_stat_replication;"
 pg_lsclusters
 ```
 
-## Tarea 2. Probar failover manual
-Simular la caída del maestro y promover el esclavo a maestro.
+### Tarea 2. Probar `failover` manual
+Simula la caída del maestro y promueve el esclavo a maestro.
 
-### Paso 1. Detener el maestro
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro stop
-
-### Paso 2. Promover el esclavo
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo promote
-
-### Paso 3. Validar promoción
+**Paso 1.** Detén al maestro.
 ```
-Intenta conectarte y escribir en la réplica ahora promovida:
+sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro stop
+```
+
+**Paso 2.** Promueve al esclavo.
+```
+sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo promote
+```
+
+**Paso 3.** Valida la promoción.
+
+Intenta conectarte y escribe en la réplica ahora promovida:
+```
 psql -p 5433
 ```
 ```sql
