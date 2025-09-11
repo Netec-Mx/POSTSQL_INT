@@ -2,7 +2,7 @@
 
 ### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
-**Paso 1.** Crea la tabla `reseñas` e inserta datos.
+**Paso 1.** Crea la tabla `reseñas` e los inserta datos.
 
 ```sql
 CREATE TABLE reseñas (
