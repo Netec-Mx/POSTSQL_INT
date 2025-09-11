@@ -1,5 +1,15 @@
 # Práctica 3. Afinación de SQL
+## Objetivos
+Al finalizar la práctica, serás capaz de:
+- Aplicar funciones de agregación y escalares en consultas SQL sobre PostgreSQL.
+
+## Duración aproximada
+- 90 minutos.
+
+## Objetivo visual
+
 ## Instrucciones
+
 ### Tarea 1. Comparar el plan de ejecución con y sin índice
 
 **Paso 1.** Crea los elementos necesarios para el ejercicio e inserta los datos.
