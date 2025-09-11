@@ -76,7 +76,7 @@ SELECT * FROM resumen_categoria ORDER BY precio_promedio DESC LIMIT 5;
 REFRESH MATERIALIZED VIEW resumen_categoria;
 ```
 
-### Tarea 4. Forzar el uso de `Nested Loop` y analizar el rendimiento.
+### Tarea 4. Forzar el uso de `Nested Loop` y analizar el rendimiento
 
 **Paso 1.** Establece el ambiente del ejercicio.
 
