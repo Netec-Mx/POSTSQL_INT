@@ -1,6 +1,7 @@
 # Práctica 1. Manejo de transacciones
+## Instrucciones
 
-### Tarea 1. Transferencia bancaria con `rollback` controlado
+### Tarea 1. Transferencia bancaria con `rollback` controlado.
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
 
 **Paso 1.** Crea una tabla y datos de prueba `psql -U postgres`.
