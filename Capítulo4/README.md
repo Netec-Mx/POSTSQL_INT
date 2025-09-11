@@ -1,4 +1,12 @@
 # Práctica 4. Respaldos
+## Objetivo
+Al finalizar la práctica, serás capaz de:
+- Realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovaccum para mantener el rendimiento en bases de datos transaccionales.
+
+## Duración aproximada
+- 120 minutos.
+
+## Objetivo visual
 
 ## Instrucciones
 
