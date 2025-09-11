@@ -124,6 +124,7 @@ UPDATE cuentas SET saldo = saldo - 150 WHERE nombre = 'Juan';
 ```
 
 Salida (`Sesión B`): verás que este comando se queda esperando (o "colgado") indefinidamente.
+
 Explicación: la `Sesión B` está bloqueada porque la `Sesión A` tiene un bloqueo `FOR UPDATE` sobre esa fila. La `Sesión B` esperará hasta que `Sesión A` libere su bloqueo.
 
 Vuelve a la `Sesión A` (Terminal 1) y confirma la transacción.
@@ -138,6 +139,7 @@ Vuelve a la `Sesión B` (Terminal 2) y observa la salida: tan pronto como la `Se
 
 Salida (`Sesión B`):
 `UPDATE 1`
+
 Explicación: el `UPDATE` de la `Sesión B` ahora se ejecutó correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` vio después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan será `800 - 150 = 650`.
 
 
