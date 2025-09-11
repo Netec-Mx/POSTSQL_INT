@@ -2,7 +2,7 @@
 ## Instrucciones
 ### Tarea 1. Comparar el plan de ejecución con y sin índice
 
-**Paso 1.** Crea los elementos necesarios para el ejercicio e inserta datos.
+**Paso 1.** Crea los elementos necesarios para el ejercicio e inserta los datos.
 
 ```sql
 CREATE TABLE productos (
