@@ -1,4 +1,14 @@
 # Práctica 2. Índices y tipos de datos en PostgreSQL
+## Objetivos
+Al finalizar la práctica, serás capaz de:
+- Utilizar de manera efectiva los diferentes tipos de datos que existen en PostgreSQL.
+- Aprender a indexar diferentes tipos de datos y cómo utilizar la exclusión de `constraints`.
+
+## Duración aproximada
+- 120 minutos.
+
+## Objetivo visual
+
 ## Instrucciones
 ### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
