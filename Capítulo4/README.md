@@ -23,7 +23,7 @@ En donde:
 - `0.0.0.0/0`: permite la conexión desde cualquier dirección IP. Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
 - `MD5`: especifica que se utilizará autenticación con contraseña `MD5`.
 
-**Paso 3.** Recarga la configuración de PostgreSQL
+**Paso 3.** Recarga la configuración de PostgreSQL.
 -	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras.
 	Usando `SQL` (recomendado si puedes conectarte):
 	```sql
@@ -53,7 +53,7 @@ En donde:
 -	Después de cambiar estos parámetros, reinicia PostgreSQL:
 	`sudo systemctl restart postgresql`.
 
-**Paso 4.** Ejecuta `pg_basebackup`
+**Paso 4.** Ejecuta `pg_basebackup`.
 -	Crea el directorio donde se harán los respaldos desde el usuario postgre:
 	`mdkir /var/lib/postgresql/respaldos`
 -	Ahora, desde la máquina donde deseas almacenar el respaldo (que puede ser el mismo servidor o uno diferente, siempre que la red lo permita y `pg_hba.conf` esté configurado correctamente), puedes ejecutar desde la línea de comandos del shell tu comando `pg_basebackup`:
