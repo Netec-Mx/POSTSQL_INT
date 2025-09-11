@@ -173,7 +173,7 @@ SELECT * FROM cuentas WHERE nombre = 'Juan';
 
 ### Tarea 3. Comparación de niveles de aislamiento
 
-**Paso 1.** Abre dos terminales `psql`
+**Paso 1.** Abre dos terminales `psql`.
 
 Terminal A:
 ```sql
