@@ -7,9 +7,9 @@
 -	PostgreSQL instalado (versión 13 o superior recomendada).
 -	Dos directorios para los datos:
 
-    `/var/lib/postgresql/maestro` (puede ser el main de un cluster normal)
+    `/var/lib/postgresql/maestro` (puede ser el `main` de un `cluster` normal)
 
-    `/var/lib/postgresql/esclavo` (podemos llamarle replica)
+    `/var/lib/postgresql/esclavo` (podemos llamarle `replica`)
 -	Puertos separados: 5432 (maestro), 5433 (esclavo).
 
 **Paso 1.** Crea los directorios de datos.
