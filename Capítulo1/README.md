@@ -181,7 +181,7 @@ BEGIN;
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 SELECT COUNT(*) FROM cuentas;
 ```
-Mantén abierta la ventana
+Mantén abierta la ventana.
 
 Terminal B:
 ```sql
