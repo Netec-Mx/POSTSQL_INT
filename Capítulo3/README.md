@@ -16,7 +16,7 @@ SELECT 'Producto ' || i, 'Categoria ' || (i % 10), i*10
 FROM generate_series(1, 100000) AS i;
 ```
 
-**Paso 2.** Ejecuta el primer `Analize`.
+**Paso 2.** Ejecuta el primer `Analyze`.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
@@ -27,7 +27,7 @@ EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
 CREATE INDEX idx_categoria ON productos(categoria);
 ```
 
-**Paso 4.** Ejecuta `Analize` con el índice y compara los resultados.
+**Paso 4.** Ejecuta `Analyze` con el índice y compara los resultados.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
@@ -85,7 +85,7 @@ SET enable_hashjoin = off;
 SET enable_mergejoin = off;
 ```
 
-**Paso 2.** Verifica con `Analize` el comportamiento del `nested loop`.
+**Paso 2.** Verifica con `Analyze` el comportamiento del `nested loop`.
 
 ```sql
 EXPLAIN ANALYZE
