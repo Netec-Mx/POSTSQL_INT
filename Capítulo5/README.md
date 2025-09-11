@@ -1,4 +1,4 @@
-# Páctica 5. Replicación
+# Práctica 5. Replicación
 ## Instrucciones
 
 ### Tarea 1. Configurar replicación del maestro-esclavo local
