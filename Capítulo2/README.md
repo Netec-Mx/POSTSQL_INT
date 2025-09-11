@@ -39,7 +39,7 @@ Explicación: esta consulta aprovecha el índice parcial si `calificacion > 4`,
 
 ### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
 
-**Paso 1.** Crea el tipo `nivel_satisfaccion`, la tabla `encuestas`, insertar datos y crear el índice `spgist`.
+**Paso 1.** Crea el tipo `nivel_satisfaccion`, la tabla `encuestas`, inserta los datos y crea el índice `spgist`.
 
 ```sql
 CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto');
