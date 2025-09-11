@@ -165,7 +165,7 @@ LIMIT 5;
 SELECT pg_stat_statements_reset();
 ```
 
-**Recomendación**
+**Recomendaciones**
 - Úsalo junto con `auto_explain` para registrar planes automáticos en el `log`.
 - Ideal para entornos de desarrollo y pruebas antes de producción.
 - No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por `overhead` mínimo `(~1-2%)`.
