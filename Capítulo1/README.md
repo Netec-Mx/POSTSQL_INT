@@ -1,7 +1,14 @@
 # Práctica 1. Manejo de transacciones
+## Objetivo
+Al finalizar la práctica, serás capaz de:
+- Reforzar los conocimientos fundamentales del lenguaje SQL mediante la conexión a una base de datos PostgreSQL, la creación de estructuras básicas (tablas) y la ejecución de consultas simples.
+
+## Duración aproximada
+- 60 minutos.
+
 ## Instrucciones
 
-### Tarea 1. Transferencia bancaria con `rollback` controlado.
+### Tarea 1. Transferencia bancaria con `rollback` controlado
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
 
 **Paso 1.** Crea una tabla y datos de prueba `psql -U postgres`.
