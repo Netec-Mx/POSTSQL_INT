@@ -63,7 +63,7 @@ Ejemplo:
 `pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador`
 
 En donde:
-- En este caso, `localhost` es la máquina local.
+- `localhost` es la máquina local.
 - `h localhost` indica el host al que conectarse.
 - `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
 - `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
