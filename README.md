@@ -11,18 +11,24 @@ Te damos la bienvenida a la **plataforma de laboratorios** del curso **PostgreSQ
 Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia práctica. Haz clic en los enlaces para comenzar.
 
 ### [Práctica 1. Manejo de transacciones](./Capítulo1/README.md)
+- **Descripción**: reforzar los conocimientos fundamentales del lenguaje SQL mediante la conexión a una base de datos PostgreSQL, la creación de estructuras básicas (tablas) y la ejecución de consultas simples.
+
 - ⏱️ **Duración estimada**: 60 min.
 
 ### [Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL](./Capítulo2/README.md)
+- **Descripción**: utilizar de manera efectiva los diferentes tipos de datos que existen en PostgreSQL y aprender a indexar diferentes tipos de datos y cómo utilizar la exclusión de constraints.
 - ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 3. Afinación de consultas y funciones](./Capítulo3/README.md)
+- **Descripción**: aplicar funciones de agregación y escalares en consultas SQL sobre PostgreSQL.
 - ⏱️ **Duración estimada**: 90 min.
    
 ### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
+- **Descripción**: realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovaccum para mantener el rendimiento en bases de datos transaccionales.
 - ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
+- **Descripción**: practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación.
 - ⏱️ **Duración estimada**: 120 min.
 
 ---
