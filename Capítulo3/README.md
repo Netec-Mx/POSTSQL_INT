@@ -16,7 +16,7 @@ SELECT 'Producto ' || i, 'Categoria ' || (i % 10), i*10
 FROM generate_series(1, 100000) AS i;
 ```
 
-**Paso 2.** Ejecuta el primer `Analyze`.
+**Paso 2.** Ejecuta el primer `ANALYZE`.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
@@ -27,7 +27,7 @@ EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
 CREATE INDEX idx_categoria ON productos(categoria);
 ```
 
-**Paso 4.** Ejecuta `Analyze` con el índice y compara los resultados.
+**Paso 4.** Ejecuta `ANALYZE` con el índice y compara los resultados.
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
@@ -53,7 +53,7 @@ JOIN productos p2 ON p1.categoria = p2.categoria
 WHERE p2.precio > 500000;
 ```
 
-**Paso 3.** Compara con `Analyze` los resultados.
+**Paso 3.** Compara los resultados con `ANALYZE`.
 
 
 ### Tarea 3. Crear una vista materializada para acelerar reportes
@@ -85,7 +85,7 @@ SET enable_hashjoin = off;
 SET enable_mergejoin = off;
 ```
 
-**Paso 2.** Verifica con `Analyze` el comportamiento del `nested loop`.
+**Paso 2.** Verifica con `ANALYZE` el comportamiento del `nested loop`.
 
 ```sql
 EXPLAIN ANALYZE
