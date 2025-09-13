@@ -229,3 +229,4 @@ Luego en `Terminal B`:
 ```sql
 UPDATE recursos SET nombre = 'B2' WHERE id = 1; -- PostgreSQL detectará el deadlock
 ```
+## Resultado esperado
