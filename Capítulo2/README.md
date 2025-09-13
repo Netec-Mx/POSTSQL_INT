@@ -228,3 +228,5 @@ WHERE indrelid = 'sensores'::regclass;
 
 ¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
 ¿Qué tan costoso en disco sería mantener varios índices?
+
+## Resultado esperado
