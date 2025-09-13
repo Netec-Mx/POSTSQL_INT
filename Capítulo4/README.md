@@ -251,3 +251,4 @@ ALTER TABLE laboratorio_autovacuum SET (autovacuum_enabled = false);
 3.	Vuelve a activar `Autovacuum` y observa cómo se recupera la situación.
 
 
+## Resultado esperado
