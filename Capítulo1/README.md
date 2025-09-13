@@ -69,7 +69,7 @@ Puedes verificar los saldos iniciales con:
 SELECT * FROM cuentas;
 ```
 
-**Salida esperada**
+Salida esperada:
 ```
    id | nombre | saldo
    ----+--------+-------
