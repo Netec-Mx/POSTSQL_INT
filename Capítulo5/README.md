@@ -138,3 +138,4 @@ CREATE TABLE test_failover(id INT);
 INSERT INTO test_failover VALUES (1);
 SELECT * FROM test_failover;
 ```
+## Resultado esperado
