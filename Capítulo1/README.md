@@ -99,7 +99,7 @@ saldo
 (1 row)
 ```
 
-Explicación: la `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que la `Sesión A` libere el bloqueo.
+La `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que la `Sesión A` libere el bloqueo.
 
 **Paso 3.** Ahora, simula una operación de retiro en esta misma sesión.
 
@@ -107,7 +107,7 @@ Explicación: la `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de '
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
 ```
 
-Explicación: esta actualización se realiza dentro de la transacción de la `Sesión A`. El saldo de Juan ahora es `800` dentro de esta transacción, pero los cambios aún no son permanentes en la base de datos y la fila sigue bloqueada por la `Sesión A`.
+Esta actualización se realiza dentro de la transacción de la `Sesión A`. El saldo de Juan ahora es `800` dentro de esta transacción, pero los cambios aún no son permanentes en la base de datos y la fila sigue bloqueada por la `Sesión A`.
  
 `Sesión B` (Terminal 2)
 intenta leer la cuenta de Juan (sin bloqueo).
@@ -124,7 +124,7 @@ saldo
 (1 row)
 ```
 
-Explicación: la `Sesión B` puede leer la fila. Observa que percibe el saldo como `1000`, no `800`, porque los cambios de la `Sesión A` todavía no se han confirmado `(COMMIT)`.
+La `Sesión B` puede leer la fila. Observa que percibe el saldo como `1000`, no `800`, porque los cambios de la `Sesión A` todavía no se han confirmado `(COMMIT)`.
 
 **Paso 4.** Ahora, intenta realizar un retiro de la misma cuenta (lo que intentará adquirir un bloqueo `FOR UPDATE`).
 
@@ -134,7 +134,7 @@ UPDATE cuentas SET saldo = saldo - 150 WHERE nombre = 'Juan';
 
 Salida (`Sesión B`): verás que este comando se queda esperando (o "colgado") indefinidamente.
 
-Explicación: la `Sesión B` está bloqueada porque la `Sesión A` tiene un bloqueo `FOR UPDATE` sobre esa fila. La `Sesión B` esperará hasta que `Sesión A` libere su bloqueo.
+La `Sesión B` está bloqueada porque la `Sesión A` tiene un bloqueo `FOR UPDATE` sobre esa fila. La `Sesión B` esperará hasta que `Sesión A` libere su bloqueo.
 
 Vuelve a la `Sesión A` (Terminal 1) y confirma la transacción.
 
@@ -142,14 +142,14 @@ Vuelve a la `Sesión A` (Terminal 1) y confirma la transacción.
 COMMIT;
 ```
 
-Explicación: al ejecutar `COMMIT`, la `Sesión A` guarda sus cambios permanentemente (el saldo de Juan ahora es `800`) y, crucialmente, libera el bloqueo sobre la fila de 'Juan'.
+Al ejecutar `COMMIT`, la `Sesión A` guarda sus cambios permanentemente (el saldo de Juan ahora es `800`) y, crucialmente, libera el bloqueo sobre la fila de 'Juan'.
 
 Vuelve a la `Sesión B` (Terminal 2) y observa la salida: tan pronto como la `Sesión A` ejecuta `COMMIT`, el `UPDATE` de la `Sesión B` que estaba esperando finaliza su ejecución.
 
 Salida (`Sesión B`):
 `UPDATE 1`
 
-Explicación: el `UPDATE` de la `Sesión B` ahora se ejecutó correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` vio después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan será `800 - 150 = 650`.
+El `UPDATE` de la `Sesión B` ahora se ejecutó correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` vio después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan será `800 - 150 = 650`.
 
 
 **Paso 5.** Verificación final (en cualquier sesión, después de que ambas transacciones hayan terminado).
