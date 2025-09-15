@@ -42,7 +42,7 @@ WHERE calificacion > 4;
 
 **Paso 3.** Verifica los resultados.
 
-Explicación: esta consulta aprovecha el índice parcial si `calificacion > 4`,
+Esta consulta aprovecha el índice parcial si `calificacion > 4`,
  reduciendo el número de filas escaneadas. Se espera un `Sequential Scan` si no se usa el índice.
 `EXPLAIN ANALYZE SELECT * FROM reseñas WHERE calificacion > 4 AND comentario IS NOT NULL;`
 
@@ -73,7 +73,7 @@ FROM generate_series(1, 500);
 CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfaccion);
 ```
 
-Explicación: esta consulta puede beneficiarse del índice `SP-GiST` en satisfaccion
+Esta consulta puede beneficiarse del índice `SP-GiST` en satisfaccion,
  si el optimizador detecta que es más eficiente que un escaneo secuencial.
 `EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';`
 
@@ -115,8 +115,7 @@ CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
 EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';
 ```
 
-Explicación: esta consulta utiliza el índice `GIN` para realizar búsquedas
- eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
+Esta consulta utiliza el índice `GIN` para realizar búsquedas eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
 
 **Comentarios de los pasos anteriores y el código**
 
@@ -192,7 +191,7 @@ FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
 
-Explicación: esta consulta debería aprovechar el índice `BRIN` si las fechas están ordenadas.
+Esta consulta debería aprovechar el índice `BRIN` si las fechas están ordenadas.
  El objetivo es reducir la cantidad de bloques leídos del disco.
 
 ```sql
