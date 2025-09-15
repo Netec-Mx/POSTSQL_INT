@@ -37,17 +37,17 @@ En donde:
 	```sql
 	SELECT pg_reload_conf();
 	```
--	Desde la línea de comandos (usando `systemd` o `init.d`):
+-	 la línea de comandos (usando `systemd` o `init.d`):
 	`sudo systemctl reload postgresql`
 -	`O`, dependiendo de tu versión y SO, podría ser:
 	`sudo /etc/init.d/postgresql reload`
 
 **Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`.
--	Crea desde el usuario `posgresql` el directorio `/var/lib/postgresql/archive`.
+-	Crea el directorio `/var/lib/postgresql/archive` desde el usuario `posgresql`.
 	```
 	mkdir /var/lib/postgresql/archive
 	```
--	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WAL de rotación usando la variable `archive_command`.
+-	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los Write-Ahead Log (WAL) de rotación usando la variable `archive_command`.
 -	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos.
 	```
 	wal_level = replica
@@ -59,7 +59,7 @@ En donde:
 -	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`.
 	- `%p`: ruta completa del archivo WAL original.
 	- `%f`: nombre del archivo WAL.
--	La variable `max_wal_senders` define cuántos procesos de envío de `WAL (Write-Ahead Log)` pueden ejecutarse simultáneamente. 
+-	La variable `max_wal_senders` define cuántos procesos de envío de WAL pueden ejecutarse simultáneamente. 
 -	Después de cambiar estos parámetros, reinicia PostgreSQL:
 	`sudo systemctl restart postgresql`.
 
@@ -74,7 +74,7 @@ Ejemplo:
 
 En donde:
 - `localhost`: es la máquina local.
-- `h localhost`: indica el `host` al cual conectarse.
+- `h localhost`: indica a cual `host` conectarse.
 - `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
 - `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
 - `z`: comprime el respaldo generado (`gzip`). El archivo final será `.tar` `.gz`.
@@ -83,12 +83,12 @@ En donde:
 
 **Archivos generados del respaldo con `pg_basebackup`**
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
-- `pg_wal.tar.gz`: contiene los archivos del Write-Ahead Log (WAL) necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
+- `pg_wal.tar.gz`: contiene los archivos del WAL necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
 - `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
 ### Tarea 2. Restaurar el clúster de PostgreSQL
 
-Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y los datos originales se mantengan.
+Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y que los datos originales se mantengan.
 
 **Paso 1.** Detén PostgreSQL:
 `sudo systemctl stop postgresql`
@@ -100,10 +100,13 @@ Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifi
 `mkdir  /var/lib/postgresql/16/main` 
 
 **Paso 4.** Copia desde el directorio de respaldos el respaldo físico.
+
 `tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 
-**Paso 5.** Restaura archivos WAL.
-	`tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal`
+**Paso 5.** Restaura los archivos WAL.
+
+`tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal`
+
 - Asegúrate de tener el `restore_command` bien definido.
 - Opcional: si hay `PITR` colocar el archivo `recovery.signal` en el nuevo `$PGDATA`.
 
@@ -161,7 +164,7 @@ CREATE TABLE laboratorio_autovacuum (
 2.	Genera datos y actualizaciones para simular actividad.
 
 ```sql
--- Insertar 10,000 registros
+-- Inserta 10,000 registros
 INSERT INTO laboratorio_autovacuum (dato)
 SELECT md5(random()::text) FROM generate_series(1, 10000);
 ```
@@ -173,7 +176,7 @@ UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 ```
 
-**Paso 3.** Monitoreo de estadísticas.
+**Paso 3.** Monitorea las estadísticas.
 
 1.	Verifica las estadísticas de la tabla.
 
@@ -191,7 +194,7 @@ FROM pg_stat_activity
 WHERE query LIKE '%autovacuum%' OR query LIKE '%VACUUM%';
 ```
 
-**Paso 4.** Configuración de parámetros.
+**Paso 4.** Configura los parámetros.
 
 1.	Modifica los parámetros de Autovacuum para la tabla de prueba.
 
@@ -209,7 +212,7 @@ FROM pg_class
 WHERE relname = 'laboratorio_autovacuum';
 ```
 
-**Paso 5.** Ejecución manual de `VACUUM` y `ANALYZE`.
+**Paso 5.** Ejecuta `VACUUM` y `ANALYZE` manualmente.
 
 1.	Ejecuta `VACUUM` manualmente y observa la diferencia.
 
@@ -223,7 +226,7 @@ VACUUM (VERBOSE) laboratorio_autovacuum;
 ANALYZE VERBOSE laboratorio_autovacuum;
 ```
 
-**Paso 6.** Análisis de resultados.
+**Paso 6.** Analiza los resultados.
 
 1.	Vuelve a consultar las estadísticas después de las operaciones.
 
