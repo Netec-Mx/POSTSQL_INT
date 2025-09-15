@@ -47,7 +47,7 @@ En donde:
 	```
 	mkdir /var/lib/postgresql/archive
 	```
--	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WALs de rotación usando la variable `archive_command`.
+-	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los WAL de rotación usando la variable `archive_command`.
 -	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos.
 	```
 	wal_level = replica
@@ -64,7 +64,7 @@ En donde:
 	`sudo systemctl restart postgresql`.
 
 **Paso 4.** Ejecuta `pg_basebackup`.
--	Crea el directorio donde se harán los respaldos desde el usuario postgre:
+-	Crea el directorio donde se harán los respaldos desde el `usuario postgre`:
 	`mdkir /var/lib/postgresql/respaldos`.
 -	Ahora, desde la máquina donde deseas almacenar el respaldo (que puede ser el mismo servidor o uno diferente, siempre que la red lo permita y `pg_hba.conf` esté configurado correctamente), puedes ejecutar desde la línea de comandos del shell tu comando `pg_basebackup`:
 `pg_basebackup -h tu_ip_servidor_primario -D /respaldos/pg -Ft -z -P -U usuario_replicador`.
@@ -74,7 +74,7 @@ Ejemplo:
 
 En donde:
 - `localhost` es la máquina local.
-- `h localhost` indica el host al que conectarse.
+- `h localhost` indica el host al cual conectarse.
 - `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
 - `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
 - `z`: comprime el respaldo generado (`gzip`). El archivo final será `.tar` `.gz`.
@@ -84,11 +84,11 @@ En donde:
 **Archivos generados del respaldo con `pg_basebackup`**
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
 - `pg_wal.tar.gz`: contiene los archivos del Write-Ahead Log (WAL) necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
-- `backup_manifest`: contiene metadatos sobre el backup, a lista de archivos incluidos, sumas de verificación e información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
+- `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
 ### Tarea 2. Restaurar el clúster de PostgreSQL
 
-Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y si se mantienen los datos originales.
+Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y los datos originales se mantengan.
 
 **Paso 1.** Detén PostgreSQL:
 `sudo systemctl stop postgresql`
@@ -129,7 +129,9 @@ Comprenderás el funcionamiento del proceso Autovacuum en PostgreSQL, la configu
 
 **Paso 1.** Verificación del estado de Autovacuum.
 1.	Conéctate a la base de datos PostgreSQL usando `psql`.
+```
 psql -U postgres -d nombre_base_datos
+```
 
 2.	Verifica si Autovacuum está activado.
 
@@ -165,7 +167,7 @@ SELECT md5(random()::text) FROM generate_series(1, 10000);
 ```
 
 ```sql
--- Actualizar todos los registros varias veces
+-- Actualiza todos los registros varias veces.
 UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
