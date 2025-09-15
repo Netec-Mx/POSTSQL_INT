@@ -10,7 +10,7 @@ Al finalizar la práctica, serás capaz de:
 
 ## Instrucciones
 
-### Tarea 1. Configurar replicación del maestro-esclavo local
+### Tarea 1. Configurar la replicación del maestro-esclavo local
 
 **Requisitos**
 -	PostgreSQL instalado (versión 13 o superior recomendada).
@@ -98,7 +98,7 @@ port = 5433
 hot_standby = on
 ```
 
-**Paso 8.** Inicia maestro y esclavo.
+**Paso 8.** Inicia al maestro y el esclavo.
 ```
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo -l esclavo.log start
