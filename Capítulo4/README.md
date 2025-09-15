@@ -74,7 +74,7 @@ Ejemplo:
 
 En donde:
 - `localhost`: es la máquina local.
-- `h localhost`: indica el host al cual conectarse.
+- `h localhost`: indica el `host` al cual conectarse.
 - `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
 - `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
 - `z`: comprime el respaldo generado (`gzip`). El archivo final será `.tar` `.gz`.
