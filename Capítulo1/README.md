@@ -149,7 +149,7 @@ Vuelve a la `Sesión B` (Terminal 2) y observa la salida: tan pronto como la `Se
 Salida (`Sesión B`):
 `UPDATE 1`
 
-El `UPDATE` de la `Sesión B` ahora se ejecutó correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` vio después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan será `800 - 150 = 650`.
+El `UPDATE` de la `Sesión B` ahora se ejecuta correctamente. El `UPDATE` aplicó el cambio de `-150` al saldo actual que `Sesión B` leyó después de que `Sesión A` hiciera `COMMIT (800)`. Por lo tanto, el saldo final de Juan es `800 - 150 = 650`.
 
 
 **Paso 5.** Verificación final (en cualquier sesión, después de que ambas transacciones hayan terminado).
