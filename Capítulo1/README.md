@@ -80,7 +80,7 @@ Salida esperada:
 
 **Paso 2.** Escenario de bloqueo con `SELECT ... FOR UPDATE`.
 
-En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Veremos cómo el bloqueo de fila evita un problema.
+En este ejemplo, la `Sesión A` intentará retirar dinero de la cuenta de Juan y la `Sesión B` intentará hacer lo mismo concurrentemente. Verás cómo el bloqueo de fila evita un problema.
 
 `Sesión A` (Terminal 1)
 inicia una transacción y bloquea la cuenta de Juan para actualizarla.
@@ -99,7 +99,7 @@ saldo
 (1 row)
 ```
 
-La `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de 'Juan'. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que la `Sesión A` libere el bloqueo.
+La `Sesión A` ahora tiene un bloqueo exclusivo sobre la fila de `'Juan'`. Esto significa que cualquier otra transacción que intente modificar o bloquear esta misma fila esperará hasta que la `Sesión A` libere el bloqueo.
 
 **Paso 3.** Ahora, simula una operación de retiro en esta misma sesión.
 
@@ -188,7 +188,7 @@ Terminal B:
 INSERT INTO cuentas (nombre, saldo) VALUES ('Luis', 100);
 ```
 
-De nuevo en `Terminal A`:
+De nuevo, en `Terminal A`:
 ```sql
 SELECT COUNT(*) FROM cuentas; -- verás el nuevo registro con READ COMMITTED
 COMMIT;
