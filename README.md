@@ -16,7 +16,7 @@ Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia pr
 - ⏱️ **Duración estimada**: 60 min.
 
 ### [Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL](./Capítulo2/README.md)
-- **Descripción**: utilizar de manera efectiva los diferentes tipos de datos que existen en PostgreSQL y aprender a indexar diferentes tipos de datos y cómo utilizar la exclusión de constraints.
+- **Descripción**: utilizar de manera efectiva los diferentes tipos de datos que existen en PostgreSQL y aprender a indexar diferentes tipos de datos y cómo utilizar la exclusión de `constraints`.
 - ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 3. Afinación de consultas y funciones](./Capítulo3/README.md)
@@ -24,11 +24,11 @@ Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia pr
 - ⏱️ **Duración estimada**: 90 min.
    
 ### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
-- **Descripción**: realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovaccum para mantener el rendimiento en bases de datos transaccionales.
+- **Descripción**: realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovacuum para mantener el rendimiento en bases de datos transaccionales.
 - ⏱️ **Duración estimada**: 120 min.
 
 ### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
-- **Descripción**: practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación.
+- **Descripción**: practicar la replicación lógica y particionar tablas para un mejor rendimiento de la aplicación.
 - ⏱️ **Duración estimada**: 120 min.
 
 ---
