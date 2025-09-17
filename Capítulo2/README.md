@@ -122,11 +122,13 @@ Esta consulta utiliza el índice `GIN` para realizar búsquedas eficientes dentr
 1.  `CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));`
 
 Crea un índice basado en una expresión, no directamente sobre una columna, sino sobre el resultado de una operación sobre una columna.
-En este caso:
-`preferencias` es un campo de tipo `JSONB`.
+En este caso, `preferencias` es un campo de tipo `JSONB`.
+
 `preferencias->>'tema'` extrae el valor del campo "tema" como texto (por ejemplo, "oscuro" o "claro").
-El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del `JSON`.
-PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
+
+El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del `JSON`. PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. 
+
+Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
 
 2.  `SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';`
 
