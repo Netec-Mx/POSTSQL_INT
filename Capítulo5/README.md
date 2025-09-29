@@ -7,7 +7,7 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
-En las siguiente práctica se verá cómo realizar replicación de base de datos con PostgreSQL.
+En las siguiente práctica se verá cómo realizar replicación lógica de base de datos con PostgreSQL.
 
 ![diagrama5](../images/replicacion.png)
 
