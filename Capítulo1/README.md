@@ -7,9 +7,9 @@ Al finalizar la práctica, serás capaz de:
 - 60 minutos.
 
 ## Objetivo visual
-Crear un diagrama o imagen que resuma las actividades a realizar, un ejemplo es la siguiente imagen. 
+En esta práctica se verá el manejo de transacciones en PostgreSQL. 
 
-![diagrama1](../images/transaccion.jpg)
+                          ![diagrama1](../images/transaccion.jpg)
 ## Instrucciones
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
