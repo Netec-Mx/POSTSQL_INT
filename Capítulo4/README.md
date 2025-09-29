@@ -262,7 +262,7 @@ ALTER TABLE laboratorio_autovacuum SET (autovacuum_enabled = false);
 ## Resultado esperado
 Para realizar un respaldo fisico ejecutamos:
 
-pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador.
+`pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador.`
 
 Lo cual genera los siguientes archivos:
 
