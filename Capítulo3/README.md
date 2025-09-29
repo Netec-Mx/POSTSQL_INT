@@ -175,3 +175,10 @@ SELECT pg_stat_statements_reset();
 - No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por `overhead` mínimo `(~1-2%)`.
 
 ## Resultado esperado
+En el query de la tabla `pg_stat_statements` podras ver las siguientes columnas y resultados.
+
+query: la consulta que se ejecutó.
+calls: veces que se ejecutó.
+total_time: suma del tiempo total.
+mean_time: tiempo promedio por llamada.
+rows: total de filas devueltas.
