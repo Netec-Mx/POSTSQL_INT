@@ -225,11 +225,11 @@ WHERE indrelid = 'sensores'::regclass;
 ¿Qué tan costoso en disco sería mantener varios índices?
 
 ## Resultado esperado
-El query ejecutado sobrea la tabla `pg_index` mostrará las siguientes columnas de resultados:
+El query ejecutado sobrea la tabla `pg_index` mostrará las siguientes columnas de resultados.
 
 - `pg_index`: catálogo del sistema que almacena información sobre índices.
 
-- `indrelid = 'sensores'::regclass`: filtra solo los índices de la tabla sensores.
+- `indrelid = 'sensores'::regclass`: filtra solo los índices de la tabla `sensores`.
 
 - `indexrelid::regclass`: convierte el ID del índice a nombre legible (como `idx_btree_fecha`).
 
