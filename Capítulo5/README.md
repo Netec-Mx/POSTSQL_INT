@@ -1,7 +1,7 @@
 # Práctica 5. Replicación
 ## Objetivo
 Al finalizar la práctica, serás capaz de:
--  Practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación.
+-  Practicar lo que es la replicación lógica para una mejor disponibilidad de la aplicación.
 
 ## Duración aproximada
 - 120 minutos.
@@ -142,7 +142,7 @@ INSERT INTO test_failover VALUES (1);
 SELECT * FROM test_failover;
 ```
 ## Resultado esperado
-Monitoreeo del estado de la replicación
+Monitoreo del estado de la replicación
 
 ```sql
 Ver slots de replicación (Publisher)
@@ -154,6 +154,7 @@ SELECT * FROM pg_stat_subscription;
  ```
 ```
  Posibles Errores y Soluciones
+
 ❌ Error: "No se pudo iniciar la replicación"
 ✔ Verifica que wal_level = logical en el Publisher.
 ✔ Confirma que el usuario replicator existe y tiene permisos.
