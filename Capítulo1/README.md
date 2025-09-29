@@ -9,7 +9,7 @@ Al finalizar la práctica, serás capaz de:
 ## Objetivo visual
 Crear un diagrama o imagen que resuma las actividades a realizar, un ejemplo es la siguiente imagen. 
 
-![diagrama1](../images/transacciones.png)
+![diagrama1](../images/transaccion.jpg)
 ## Instrucciones
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
