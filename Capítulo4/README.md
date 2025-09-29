@@ -9,6 +9,8 @@ Al finalizar la práctica, serás capaz de:
 ## Objetivo visual
 En estas prácticas se vera como realizar respaldos y restauraciones físicas de PostgreSQL, asi como la herramienta Autovacuum.
 
+![diagrama1](../images/Respaldo PostgreSQL.png)
+
 ## Instrucciones
 
 ### Tarea 1. Hacer un respaldo del clúster PostgreSQL
