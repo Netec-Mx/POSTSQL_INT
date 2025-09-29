@@ -225,7 +225,7 @@ WHERE indrelid = 'sensores'::regclass;
 ¿Qué tan costoso en disco sería mantener varios índices?
 
 ## Resultado esperado
-El query ejecutado sobrea la tabla `pg_index` mostrará los siguientes columnas de resultados:
+El query ejecutado sobrea la tabla `pg_index` mostrará las siguientes columnas de resultados:
 
 - `pg_index`: catálogo del sistema que almacena información sobre índices.
 
