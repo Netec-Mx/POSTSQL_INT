@@ -8,6 +8,7 @@ Al finalizar la práctica, serás capaz de:
 
 ## Objetivo visual
 En los siguientes ejercicios se verá como analizar y mejorar el desempeño de las sentencias SQL en PostgreSQL.
+
 ![diagrama3](../images/tuning.png)
 
 ## Instrucciones
