@@ -8,7 +8,7 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
-En esta práctica se verá la creación y manejo de índices en PostgreSQL. 
+En esta práctica se verá la creación y manejo de índices en PostgreSQL. El siguiente diagrama muestra la construcción de los índices btree en PostgreSQL.
 
 ![diagrama2](../images/btree.png)
 ## Instrucciones
