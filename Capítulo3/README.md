@@ -7,7 +7,7 @@ Al finalizar la práctica, serás capaz de:
 - 90 minutos.
 
 ## Objetivo visual
-En los siguientes ejercicios se verá como analizar y mejorar el desempeño de las sentencias SQL en PostgreSQL.
+En los siguientes ejercicios, verás cómo analizar y mejorar el desempeño de las sentencias SQL en PostgreSQL.
 
 ![diagrama3](../images/tuning.png)
 
@@ -175,7 +175,7 @@ SELECT pg_stat_statements_reset();
 - No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por `overhead` mínimo `(~1-2%)`.
 
 ## Resultado esperado
-En el query de la tabla `pg_stat_statements` podras ver las estadísticas y resultados en las siguientes columnas:
+En el query de la tabla `pg_stat_statements`, podrás ver las estadísticas y resultados en las siguientes columnas.
 
 - `query`: la consulta que se ejecutó.
 - `calls`: veces que se ejecutó.
