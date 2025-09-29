@@ -264,13 +264,13 @@ Para realizar un respaldo fisico ejecutamos:
 
 `pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador.`
 
-Lo cual genera los siguientes archivos:
+Lo cual genera los siguientes archivos.
 
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
 - `pg_wal.tar.gz`: contiene los archivos del WAL necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
 - `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
-Para restaura el "cluster" ejecutar:
+Para restaura el "clúster" ejecutar:
 
 `tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 
