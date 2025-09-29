@@ -77,7 +77,7 @@ Ejemplo:
 
 En donde:
 - `localhost`: es la máquina local.
-- `h localhost`: indica a cual `host` conectarse.
+- `h localhost`: indica a cuál `host` conectarse.
 - `D /var/lib/postgresql/respaldos`: directorio de destino donde se almacenará el respaldo.
 - `F` `t`: formato del respaldo, `t` significa `tarball` (archivo `.tar`).
 - `z`: comprime el respaldo generado (`gzip`). El archivo final será `.tar` `.gz`.
@@ -102,7 +102,7 @@ Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifi
 **Paso 3.** Crea el directorio `$PGDATA` desde el usuario `postgre`:
 `mkdir  /var/lib/postgresql/16/main` 
 
-**Paso 4.** Copia desde el directorio de respaldos el respaldo físico.
+**Paso 4.** Copia desde el directorio de respaldos, el respaldo físico.
 
 `tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 
@@ -260,7 +260,7 @@ ALTER TABLE laboratorio_autovacuum SET (autovacuum_enabled = false);
 
 
 ## Resultado esperado
-Para realizar un respaldo fisico ejecutamos:
+Para realizar un respaldo físico, ejecuta:
 
 `pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador.`
 
@@ -270,7 +270,7 @@ Lo cual genera los siguientes archivos.
 - `pg_wal.tar.gz`: contiene los archivos del WAL necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
 - `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
-Para restaura el "clúster" ejecutar:
+Para restaurar el "clúster", ejecuta:
 
 `tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 
