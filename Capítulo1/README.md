@@ -232,3 +232,4 @@ Luego en `Terminal B`:
 UPDATE recursos SET nombre = 'B2' WHERE id = 1; -- PostgreSQL detectará el deadlock
 ```
 ## Resultado esperado
+En la Terminal B PostgreSQL detectará el deadlock y enviará un mensaje de error. Cuando un deadlock ocurre en PostgreSQL, el sistema lo detecta y termina una de las transacciones involucradas para resolver el bloqueo. Esto significa que una de las transacciones fallará y será revertida (rollback), liberando los bloqueos que tenía y permitiendo que la otra transacción continúe su ejecución. Selección de la "víctima": El sistema elige a una de las transacciones involucradas como la "víctima". La elección se basa en varios factores, pero generalmente se selecciona la transacción que ha realizado menos trabajo. Esto se hace para minimizar la pérdida de progreso.
