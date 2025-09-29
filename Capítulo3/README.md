@@ -177,8 +177,8 @@ SELECT pg_stat_statements_reset();
 ## Resultado esperado
 En el query de la tabla `pg_stat_statements` podras ver las siguientes columnas y resultados.
 
-query: la consulta que se ejecutó.
-calls: veces que se ejecutó.
-total_time: suma del tiempo total.
-mean_time: tiempo promedio por llamada.
-rows: total de filas devueltas.
+- `query`: la consulta que se ejecutó.
+- `calls`: veces que se ejecutó.
+- `total_time`: suma del tiempo total.
+- `mean_time`: tiempo promedio por llamada.
+- `rows`: total de filas devueltas.
