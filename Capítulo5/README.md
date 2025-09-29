@@ -142,3 +142,29 @@ INSERT INTO test_failover VALUES (1);
 SELECT * FROM test_failover;
 ```
 ## Resultado esperado
+Monitoreeo del estado de la replicación
+
+```sql
+Ver slots de replicación (Publisher)
+SELECT * FROM pg_replication_slots;
+```
+```sql
+Ver estado de la suscripción (Subscriber)
+SELECT * FROM pg_stat_subscription;
+ ```
+```
+ Posibles Errores y Soluciones
+❌ Error: "No se pudo iniciar la replicación"
+✔ Verifica que wal_level = logical en el Publisher.
+✔ Confirma que el usuario replicator existe y tiene permisos.
+❌ Datos no aparecen en el Subscriber
+✔ Ejecuta en el Subscriber:
+ALTER SUBSCRIPTION sub_clientes REFRESH PUBLICATION;
+```
+ 
+### Conclusión
+¡Has configurado exitosamente replicación lógica en PostgreSQL 16 en un entorno local!
+```
+🔹 Publisher (5432): Envía cambios.
+🔹 Subscriber (5433): Recibe cambios en tiempo real.
+```
