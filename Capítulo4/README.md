@@ -7,6 +7,7 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
+En estas prácticas se vera como realizar respaldos y restauraciones físicas de PostgreSQL, asi como la herramienta Autovacuum.
 
 ## Instrucciones
 
