@@ -1,7 +1,7 @@
 # Práctica 5. Replicación
 ## Objetivo
 Al finalizar la práctica, serás capaz de:
--  Practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación
+-  Practicar lo que es la replicación lógica y saber particionar tablas para un mejor rendimiento de la aplicación.
 
 ## Duración aproximada
 - 120 minutos.
