@@ -8,13 +8,13 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
-En esta práctica se verá la creación y manejo de índices en PostgreSQL. El siguiente diagrama muestra la construcción de los índices btree en PostgreSQL.
+En esta práctica se verá la creación y manejo de índices en PostgreSQL. El siguiente diagrama muestra la construcción de los índices B-Tree en PostgreSQL.
 
 ![diagrama2](../images/btree.png)
 ## Instrucciones
 ### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
-**Paso 1.** Crea la tabla `reseñas` e inserta los inserta datos.
+**Paso 1.** Crea la tabla `reseñas` e inserta los datos.
 
 ```sql
 CREATE TABLE reseñas (
@@ -72,10 +72,10 @@ SELECT
 FROM generate_series(1, 500);
 ```
 ```sql
-CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfaccion);
+CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfacción);
 ```
 
-Esta consulta puede beneficiarse del índice `SP-GiST` en satisfaccion,
+Esta consulta puede beneficiarse del índice `SP-GiST` en satisfacción,
  si el optimizador detecta que es más eficiente que un escaneo secuencial.
 `EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';`
 
@@ -128,7 +128,7 @@ En este caso, `preferencias` es un campo de tipo `JSONB`.
 
 `preferencias->>'tema'` extrae el valor del campo "tema" como texto (por ejemplo, "oscuro" o "claro").
 
-El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo específico del `JSON`. PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. 
+El índice se crea sobre esa expresión para acelerar búsquedas por ese campo específico del `JSON`. PostgreSQL no puede indexar directamente elementos internos de un `JSONB` con `BTREE`. 
 
 Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
 
@@ -215,7 +215,7 @@ WHERE indrelid = 'sensores'::regclass;
 
 **Comentarios**
 
-- Al ejecutar las sentencias anteriores se mostrará el tamaño en disco de todos los índices asociados a la tabla `sensores`.
+- Al ejecutar las sentencias anteriores, se mostrará el tamaño en disco de todos los índices asociados a la tabla `sensores`.
 
 
 
