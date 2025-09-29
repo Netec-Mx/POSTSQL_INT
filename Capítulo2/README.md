@@ -8,7 +8,9 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
+En esta práctiva se verá la creación y manejo de índices en PostgreSQL. 
 
+![diagrama2](../images/btree.png)
 ## Instrucciones
 ### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
 
