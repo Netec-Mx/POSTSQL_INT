@@ -23,11 +23,11 @@ Cada uno de estos laboratorios está diseñado para ofrecerte una experiencia pr
 - **Descripción**: aplicar funciones de agregación y escalares en consultas SQL sobre PostgreSQL.
 - ⏱️ **Duración estimada**: 90 min.
    
-### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo2/README.md)
+### [Práctica 4. Respaldo físicos y Autovacuum](./Capítulo4/README.md)
 - **Descripción**: realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovacuum para mantener el rendimiento en bases de datos transaccionales.
 - ⏱️ **Duración estimada**: 120 min.
 
-### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo3/README.md)
+### [Práctica 5. Replicación lógica y particionamiento de tablas](./Capítulo5/README.md)
 - **Descripción**: practicar la replicación lógica y particionar tablas para un mejor rendimiento de la aplicación.
 - ⏱️ **Duración estimada**: 120 min.
 
