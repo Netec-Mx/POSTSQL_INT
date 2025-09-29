@@ -7,7 +7,7 @@ Al finalizar la práctica, serás capaz de:
 - 120 minutos.
 
 ## Objetivo visual
-En las siguiente práctica se verá cómo realizar replicación lógica de base de datos con PostgreSQL.
+En la siguiente práctica, verás cómo realizar una replicación lógica de base de datos con PostgreSQL.
 
 ![diagrama5](../images/replicacion.png)
 
@@ -21,7 +21,7 @@ En las siguiente práctica se verá cómo realizar replicación lógica de base 
 
     `/var/lib/postgresql/maestro` (puede ser el `main` de un `cluster` normal).
 
-    `/var/lib/postgresql/esclavo` (podemos llamarle `replica`).
+    `/var/lib/postgresql/esclavo` (puedes llamarle `replica`).
 -	Puertos separados: 5432 (maestro), 5433 (esclavo).
 
 **Paso 1.** Crea los directorios de datos.
@@ -77,7 +77,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO replicador;
 
 **Paso 6.** Inicializa el esclavo con `pg_basebackup`.
 
-Primero, detén el maestro si necesitas limpiar datos en el esclavo:
+Primero, detén al maestro si necesitas limpiar datos en el esclavo:
 ```
 sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro stop
 ```
@@ -101,7 +101,7 @@ port = 5433
 hot_standby = on
 ```
 
-**Paso 8.** Inicia al maestro y el esclavo.
+**Paso 8.** Inicia al maestro y al esclavo.
 ```
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
 sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo -l esclavo.log start
@@ -132,7 +132,7 @@ sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclav
 
 **Paso 3.** Valida la promoción.
 
-Intenta conectarte y escribe en la réplica ahora promovida:
+Intenta conectarte y escribe en la réplica, ahora promovida:
 ```
 psql -p 5433
 ```
@@ -142,7 +142,7 @@ INSERT INTO test_failover VALUES (1);
 SELECT * FROM test_failover;
 ```
 ## Resultado esperado
-Monitoreo del estado de la replicación
+**Monitoreo del estado de la replicación**
 
 ```sql
 Ver slots de replicación (Publisher)
@@ -153,7 +153,7 @@ Ver estado de la suscripción (Subscriber)
 SELECT * FROM pg_stat_subscription;
  ```
 ```
- Posibles Errores y Soluciones
+ Posibles errores y soluciones
 
 ❌ Error: "No se pudo iniciar la replicación"
 ✔ Verifica que wal_level = logical en el Publisher.
@@ -164,8 +164,8 @@ ALTER SUBSCRIPTION sub_clientes REFRESH PUBLICATION;
 ```
  
 ### Conclusión
-¡Has configurado exitosamente replicación lógica en PostgreSQL 16 en un entorno local!
+¡Has configurado exitosamente la replicación lógica en PostgreSQL 16 en un entorno local!
 ```
-🔹 Publisher (5432): Envía cambios.
-🔹 Subscriber (5433): Recibe cambios en tiempo real.
+- Publisher (5432): envía cambios.
+- Subscriber (5433): recibe cambios en tiempo real.
 ```
