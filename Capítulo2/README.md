@@ -215,7 +215,17 @@ WHERE indrelid = 'sensores'::regclass;
 
 **Comentarios**
 
-- Muestra el tamaño en disco de todos los índices asociados a la tabla `sensores`.
+- Al ejecutar las sentencias anteriores se mostrará el tamaño en disco de todos los índices asociados a la tabla `sensores`.
+
+
+
+**Preguntas adicionales del ejercicio**
+
+¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
+¿Qué tan costoso en disco sería mantener varios índices?
+
+## Resultado esperado
+El query ejecutado sobrea la tabla `pg_index` mostrará los siguientes columnas de resultados:
 
 - `pg_index`: catálogo del sistema que almacena información sobre índices.
 
@@ -226,10 +236,3 @@ WHERE indrelid = 'sensores'::regclass;
 - `pg_relation_size(indexrelid)`: obtiene el tamaño en bytes del índice.
 
 - `pg_size_pretty(...)`: convierte esos bytes a un formato legible como 12 MB, 180 kB, etcétera.
-
-**Preguntas adicionales del ejercicio**
-
-¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
-¿Qué tan costoso en disco sería mantener varios índices?
-
-## Resultado esperado
