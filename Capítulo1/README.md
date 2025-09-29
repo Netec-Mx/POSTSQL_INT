@@ -9,7 +9,7 @@ Al finalizar la práctica, serás capaz de:
 ## Objetivo visual
 En esta práctica se verá el manejo de transacciones en PostgreSQL. 
 
-                          ![diagrama1](../images/transaccion.jpg)
+![diagrama1](../images/transaccion.jpg)
 ## Instrucciones
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
