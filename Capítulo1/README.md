@@ -14,6 +14,8 @@ En esta práctica se verá el manejo de transacciones en PostgreSQL.
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
+Desde el escritorio de Linux abre una terminal y conéctate a PosgreSQL con el comando:
+$ sudo -i -u posgres psql
 
 **Paso 1.** Crea una tabla y datos de prueba `psql -U postgres`.
 
@@ -35,6 +37,8 @@ BEGIN;
 UPDATE cuentas SET saldo = saldo - 200 WHERE nombre = 'Juan';
 UPDATE cuentas SET saldo = saldo + 200 WHERE nombre = 'Ana';
 COMMIT;
+-- Verifica que la transferencia fue exitosa.
+SELECT * FROM cuentas;
 ```
 
 **Paso 3.** Simula una falla y `rollback`.
@@ -54,7 +58,8 @@ SELECT * FROM cuentas;
 ### Tarea 2. Simulación de bloqueo concurrente
 El escenario es una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
 Usaremos dos sesiones de `psql` para simular una `Sesión A` y una `Sesión B`.
-Antes de iniciar el laboratorio, lleva a cabo los pasos de preparación.
+Abra dos terminales en el escritorio de Linux.
+Antes de iniciar el laboratorio, lleva a cabo los siguientes pasos de preparación.
 
 #### Preparación (en cualquier sesión, una sola vez)
 
