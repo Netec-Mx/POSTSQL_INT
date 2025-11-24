@@ -14,8 +14,10 @@ En esta práctica se verá el manejo de transacciones en PostgreSQL.
 
 ### Tarea 1. Transferencia bancaria con `rollback` controlado
 En el siguiente ejercicio, practicarás diferentes escenarios de manejo de transacciones comprobando su funcionamiento.
+```
 Desde el escritorio de Linux abre una terminal y conéctate a PosgreSQL con el comando:
 $ sudo -i -u posgres psql
+```
 
 **Paso 1.** Crea una tabla y datos de prueba `psql -U postgres`.
 
