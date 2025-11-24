@@ -60,10 +60,9 @@ SELECT * FROM cuentas;
 ### Tarea 2. Simulación de bloqueo concurrente
 El escenario es una transferencia de dinero, donde es crucial evitar inconsistencias si dos transacciones intentan modificar el saldo de la misma cuenta al mismo tiempo.
 Usaremos dos sesiones de `psql` para simular una `Sesión A` y una `Sesión B`.
-Abra dos terminales en el escritorio de Linux.
-Antes de iniciar el laboratorio, lleva a cabo los siguientes pasos de preparación.
+Abra dos terminales en el escritorio de Linux, y antes de iniciar el laboratorio, lleva a cabo los siguientes pasos de preparación.
 
-#### Preparación (en cualquier sesión, una sola vez)
+#### Preparación (En una terminal en la sesión A, una sola vez)
 
 **Paso 1.** Primero, limpia la tabla `cuentas` y agrega los datos:
 
