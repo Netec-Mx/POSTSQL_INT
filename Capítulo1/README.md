@@ -81,8 +81,8 @@ Salida esperada:
 ```
    id | nombre | saldo
    ----+--------+-------
-    1 | Juan   |  1000
-    2 | Ana    |  1000
+    3 | Juan   |  1000
+    4 | Ana    |  1000
    (2 rows)
 ```
 
@@ -137,6 +137,7 @@ La `Sesión B` puede leer la fila. Observa que percibe el saldo como `1000`, no 
 **Paso 4.** Ahora, intenta realizar un retiro de la misma cuenta (lo que intentará adquirir un bloqueo `FOR UPDATE`).
 
 ```sql
+-- Desde la Session B:
 UPDATE cuentas SET saldo = saldo - 150 WHERE nombre = 'Juan';
 ```
 
