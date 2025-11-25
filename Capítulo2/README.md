@@ -12,21 +12,21 @@ En esta práctica se verá la creación y manejo de índices en PostgreSQL. El s
 
 ![diagrama2](../images/btree.png)
 ## Instrucciones
-### Tarea 1. Reseñas con `TEXT` y `VARCHAR`
+### Tarea 1. Criticas de Peliculas con `TEXT` y `VARCHAR`
 
-**Paso 1.** Crea la tabla `reseñas` e inserta los datos.
+**Paso 1.** Crea la tabla `comentarios` e inserta los datos.
 
 ```sql
-CREATE TABLE reseñas (
+CREATE TABLE comentarios (
     id SERIAL PRIMARY KEY,
     autor VARCHAR(100),
-    comentario TEXT,
+    critica TEXT,
     calificacion INT CHECK (calificacion BETWEEN 1 AND 5),
     fecha TIMESTAMP DEFAULT NOW()
 );
 ```
 ```sql
-INSERT INTO reseñas (autor, comentario, calificacion)
+INSERT INTO comentarios (autor, critica, calificacion)
 SELECT
     'Usuario' || i,
     repeat('Muy buen producto. ', (random()*3 + 1)::int),
@@ -37,8 +37,8 @@ FROM generate_series(1, 1000) i;
 **Paso 2.** Crea los índices.
 
 ```sql
-CREATE INDEX idx_autor ON reseñas(autor);
-CREATE INDEX idx_comentarios_positivos ON reseñas(comentario)
+CREATE INDEX idx_autor ON comentarios(autor);
+CREATE INDEX idx_comentarios_positivos ON comentarios(critica)
 WHERE calificacion > 4;
 ```
 
@@ -46,7 +46,7 @@ WHERE calificacion > 4;
 
 Esta consulta aprovecha el índice parcial si `calificacion > 4`,
  reduciendo el número de filas escaneadas. Se espera un `Sequential Scan` si no se usa el índice.
-`EXPLAIN ANALYZE SELECT * FROM reseñas WHERE calificacion > 4 AND comentario IS NOT NULL;`
+`EXPLAIN ANALYZE SELECT * FROM comentarios WHERE calificacion > 4 AND critica IS NOT NULL;`
 
 
 ### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
