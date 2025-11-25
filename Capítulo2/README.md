@@ -30,7 +30,7 @@ INSERT INTO comentarios (autor, critica, calificacion)
 SELECT
     'Usuario' || i,
     repeat('Muy buen producto. ', (random()*3 + 1)::int),
-    (random()*5 + 1)::int
+    (random()*4 + 1)::int
 FROM generate_series(1, 1000) i;
 ```
 
@@ -59,7 +59,7 @@ CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'mu
 ```sql
 CREATE TABLE encuestas (
     id SERIAL PRIMARY KEY,
-    respuestas TEXT[],
+    respuestas TEXT,
     satisfaccion nivel_satisfaccion,
     fecha DATE DEFAULT CURRENT_DATE
 );
@@ -67,8 +67,8 @@ CREATE TABLE encuestas (
 ```sql
 INSERT INTO encuestas (respuestas, satisfaccion)
 SELECT
-    ARRAY['si', 'no', 'tal vez'][:(random()*3)::int],
-    ARRAY['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'][(random()*5)::int]
+    (ARRAY['si', 'no', 'tal vez'])[:(random()*3+1)::int],
+    (ARRAY['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'])[(random()*4+1)::int]::nivel_satisfaccion
 FROM generate_series(1, 500);
 ```
 ```sql
