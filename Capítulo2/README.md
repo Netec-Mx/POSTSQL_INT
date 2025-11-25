@@ -67,16 +67,17 @@ CREATE TABLE encuestas (
 ```sql
 INSERT INTO encuestas (respuestas, satisfaccion)
 SELECT
-    (ARRAY['si', 'no', 'tal vez'])[:(random()*3+1)::int],
+    (ARRAY['si', 'no', 'tal vez'])[(random()*3+1)::int],
     (ARRAY['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'])[(random()*4+1)::int]::nivel_satisfaccion
 FROM generate_series(1, 500);
 ```
 ```sql
-CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfacción);
+CREATE INDEX idx_respuestas_satisfaccion ON encuestas (respuestas, satisfacción);
 ```
 
-Esta consulta puede beneficiarse del índice `SP-GiST` en satisfacción,
+ Esta consulta puede beneficiarse del índice en respuestas mas satisfacción,
  si el optimizador detecta que es más eficiente que un escaneo secuencial.
+ Verifica con EXPLAIN algunas búsquedas para ver si se esta usando el indice o no.
 `EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';`
 
 ## Tarea 3. Manejo de preferencias de usuario usando el tipo `JSONB` y el índice `GIN`.
