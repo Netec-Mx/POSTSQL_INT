@@ -120,7 +120,7 @@ EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}
 
 Esta consulta utiliza el índice `GIN` para realizar búsquedas eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
 
-**Comentarios de los pasos anteriores y el código**
+**Explicación de los pasos anteriores y del código**
 
 1.  `CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));`
 
