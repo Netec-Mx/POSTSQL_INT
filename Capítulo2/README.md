@@ -176,7 +176,7 @@ CREATE TABLE sensores (
 INSERT INTO sensores (zona, temperatura, fecha)
 SELECT
     'zona_' || (i % 10),
-    round((20 + random() * 15), 2),
+    ROUND( (20 + random() * 15)::numeric, 2),
     now() - INTERVAL '1 minute' * i
 FROM generate_series(1, 1000000) i;
 ```
