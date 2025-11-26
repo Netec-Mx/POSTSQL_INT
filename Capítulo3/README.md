@@ -88,6 +88,8 @@ SELECT * FROM resumen_categoria ORDER BY precio_promedio DESC LIMIT 5;
 **Paso 3.** Refresca la vista y comprueba los cambios.
 ```sql
 REFRESH MATERIALIZED VIEW resumen_categoria;
+
+--Se obtienen los mismos resultados dado que no hubieron cambios en los datos.
 ```
 
 ### Tarea 4. Forzar el uso de `Nested Loop` y analizar el rendimiento
@@ -107,6 +109,8 @@ SELECT p1.nombre, p2.nombre
 FROM productos p1
 JOIN productos p2 ON p1.categoria = p2.categoria
 WHERE p1.precio < 100 AND p2.precio > 1000;
+
+-- Anota los resultados obtenidos.
 ```
 
 **Paso 3.** Restablece variables de configuración.
@@ -114,6 +118,9 @@ WHERE p1.precio < 100 AND p2.precio > 1000;
 RESET enable_hashjoin;
 RESET enable_mergejoin;
 RESET enable_nestloop;
+
+-- Vuelve a ejecutar el EXPLAIN ANALIZE y anota los resultados
+-- ¿Que PLAN dió el mejor desempeño?
 ```
 
 ### Tarea adicional (opcional). Uso de `pg_stat_statements` para detectar consultas costosas
