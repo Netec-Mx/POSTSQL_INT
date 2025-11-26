@@ -59,7 +59,7 @@ WHERE categoria IN (
 );
 ```
 
-**Paso 2.** Consulta optimizada con `JOIN`.
+**Paso 2.** Realiza ahora la consulta usando `JOIN`.
 ```sql
 SELECT DISTINCT p1.nombre
 FROM productos p1
@@ -67,7 +67,7 @@ JOIN productos p2 ON p1.categoria = p2.categoria
 WHERE p2.precio > 500000;
 ```
 
-**Paso 3.** Compara los resultados con `ANALYZE`.
+**Paso 3.** Compara los resultados con `ANALYZE`. ¿Cuales son tus conclusiones?
 
 
 ### Tarea 3. Crear una vista materializada para acelerar reportes
