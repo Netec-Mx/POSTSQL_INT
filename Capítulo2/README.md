@@ -67,7 +67,7 @@ CREATE TABLE encuestas (
 ```sql
 INSERT INTO encuestas (respuestas, satisfaccion)
 SELECT
-    (ARRAY['si', 'no', 'tal vez'])[(random()*3+1)::int],
+    (ARRAY['si', 'no', 'tal vez'])[:(random()*3+1)::int],
     (ARRAY['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'])[(random()*4+1)::int]::nivel_satisfaccion
 FROM generate_series(1, 500);
 ```
