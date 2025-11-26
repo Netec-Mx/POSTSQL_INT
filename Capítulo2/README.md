@@ -51,7 +51,7 @@ Esta consulta aprovecha el índice parcial si `calificacion > 4`,
 
 ### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
 
-**Paso 1.** Crea el tipo `nivel_satisfaccion`, la tabla `encuestas`, inserta los datos y crea el índice `spgist`.
+**Paso 1.** Crea el tipo `nivel_satisfaccion`, la tabla `encuestas`, inserta los datos y crea el índice.
 
 ```sql
 CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto');
@@ -72,7 +72,7 @@ SELECT
 FROM generate_series(1, 500);
 ```
 ```sql
-CREATE INDEX idx_respuestas_satisfaccion ON encuestas (respuestas, satisfacción);
+CREATE INDEX idx_respuestas_satisfaccion ON encuestas (respuestas, satisfaccion);
 ```
 
  Esta consulta puede beneficiarse del índice en respuestas mas satisfacción,
