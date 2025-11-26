@@ -159,13 +159,14 @@ SELECT * FROM productos WHERE nombre ILIKE '%123%';
 **Paso 4.** Consulta estadísticas.
 
 ```sql
-SELECT query, calls, total_time, mean_time, rows
+SELECT query, calls, total_exec_time, mean_plan_time, rows
 FROM pg_stat_statements
-ORDER BY total_time DESC
+ORDER BY total_exec_time DESC
 LIMIT 5;
 ```
 
 **Columnas clave**
+- Revisa los valores de las siguientes columnas:
 - `query`: la consulta que se ejecutó.
 - `calls`: veces que se ejecutó.
 - `total_time`: suma del tiempo total.
