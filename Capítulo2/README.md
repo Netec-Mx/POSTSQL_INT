@@ -118,7 +118,7 @@ CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
 EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';
 ```
 
-Esta consulta utiliza el índice `GIN` para realizar búsquedas eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
+Esta consulta utiliza el índice para realizar búsquedas eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
 
 **Explicación de los pasos anteriores y del código**
 
@@ -155,7 +155,7 @@ Pero este **no**:
   "tema": "claro"
 }
 ```
-Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas, incluso dentro de estructuras complejas como `JSON`.
+Se observa la compatibilidad con índices, lo que permite búsquedas rápidas, incluso dentro de estructuras complejas como `JSON`.
 
 ### Tarea 4. Manejo de una tabla de sensores con índice `BRIN` y `BTREE`
 
