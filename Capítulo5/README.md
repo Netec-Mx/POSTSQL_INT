@@ -14,7 +14,8 @@ En la siguiente práctica, verás cómo realizar una replicación lógica de bas
 ## Instrucciones
 
 ```
-🔧 Requisitos
+🔧 Requisitos:
+
 ✔ PostgreSQL 14 instalado 
 ✔ Acceso a psql y permisos de administrador.
  
