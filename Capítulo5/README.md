@@ -19,12 +19,16 @@ En la siguiente práctica, verás cómo realizar una replicación lógica de bas
 ✔ Acceso a psql y permisos de administrador.
  
 📌 Paso 1: Configurar dos instancias de PostgreSQL (Publisher y Subscriber)
+
 Vamos a simular dos servidores en la misma máquina usando puertos diferentes:
+
 •	Publisher (Primario): Puerto 5432 (default).
 •	Subscriber (Réplica): Puerto 5433.
 
 1.1 Crear un segundo cluster de PostgreSQL (Subscriber)
+
 sudo pg_createcluster 14 replica --start --port=5433
+
 Esto crea un nuevo cluster llamado replica en el puerto 5433.
 
 1.2 Verificar que ambos clusters estén corriendo
@@ -58,6 +62,7 @@ sino existe en la ruta anterior usa la siguiente:
 sudo nano /etc/postgresql/14/main/pg_hba.conf
 
 Agrega esta línea al final:
+
 # Permite conexión local para replicación
 host    localhost     replicator      127.0.0.1/32          md5
 
