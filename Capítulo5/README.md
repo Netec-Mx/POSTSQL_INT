@@ -13,159 +13,112 @@ En la siguiente práctica, verás cómo realizar una replicación lógica de bas
 
 ## Instrucciones
 
-### Tarea 1. Configurar la replicación del maestro-esclavo local
-
-**Requisitos**
--	PostgreSQL instalado (versión 13 o superior recomendada).
--	Dos directorios para los datos:
-
-    `/var/lib/postgresql/maestro` (puede ser el `main` de un `cluster` normal).
-
-    `/var/lib/postgresql/esclavo` (puedes llamarle `replica`).
--	Puertos separados: 5432 (maestro), 5433 (esclavo).
-
-**Paso 1.** Crea los directorios de datos.
 ```
-sudo mkdir -p /var/lib/postgresql/maestro
-sudo mkdir -p /var/lib/postgresql/esclavo
-sudo chown -R postgres:postgres /var/lib/postgresql
-```
-**Paso 2.** Inicializa el maestro.
-```
-sudo -u postgres /usr/lib/postgresql/16/bin/initdb -D /var/lib/postgresql/maestro
-```
-
-**Paso 3.** Configura el `postgresql.conf` del maestro.
-
-Edita el siguiente archivo: `sudo nano /var/lib/postgresql/maestro/postgresql.conf`.
-
-Agrega o ajusta:
-```
-port = 5432
-wal_level = replica
+🔧 Requisitos
+✔ PostgreSQL 14 instalado 
+✔ Acceso a psql y permisos de administrador.
+ 
+📌 Paso 1: Configurar dos instancias de PostgreSQL (Publisher y Subscriber)
+Vamos a simular dos servidores en la misma máquina usando puertos diferentes:
+•	Publisher (Primario): Puerto 5432 (default).
+•	Subscriber (Réplica): Puerto 5433.
+1.1 Crear un segundo cluster de PostgreSQL (Subscriber)
+sudo pg_createcluster 14 replica --start --port=5433
+Esto crea un nuevo cluster llamado replica en el puerto 5433.
+1.2 Verificar que ambos clusters estén corriendo
+sudo pg_lsclusters
+Salida esperada:
+Ver Cluster Port Status Owner    Data directory
+14  main    5432 online postgres /var/lib/postgresql/14/main
+14  replica 5433 online postgres /var/lib/postgresql/14/replica
+ 
+📌 Paso 2: Configurar el Publisher (Primario, puerto 5432)
+2.1 Editar postgresql.conf para habilitar replicación lógica
+sudo nano /etc/postgresql/14/main/postgresql.conf
+Asegúrate de que estas líneas estén configuradas:
+wal_level = logical
+max_replication_slots = 10
 max_wal_senders = 10
-wal_keep_size = 64MB
-listen_addresses = '*'
-```
 
-**Paso 4.** Configura el `pg_hba.conf` del maestro.
-
-```
-sudo nano /var/lib/postgresql/maestro/pg_hba.conf
-```
-
-
-Agrega:
-
-```
-host replication replicador 127.0.0.1/32 md5
-```
-
-**Paso 5.** Crea un usuario de replicación (si no existe) y otorga privilegios.
-
-Inicia el maestro en segundo plano:
-```
-sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start 
-```
-Crea el usuario replicador `psql -p 5432 -U postgres`
-
-```sql
-CREATE ROLE replicador WITH REPLICATION LOGIN ENCRYPTED PASSWORD 'abc123';
+2.2 Editar pg_hba.conf para permitir conexiones locales
+sudo nano /var/lib/postgresql/14/main/pg_hba.conf
+sino existe en la ruta anterior usa la siguiente:
+sudo nano /etc/postgresql/14/main/pg_hba.conf
+Agrega esta línea al final:
+# Permite conexión local para replicación
+host    localhost     replicator      127.0.0.1/32          md5
+2.3 Reiniciar PostgreSQL
+sudo systemctl restart postgresql@14-main  # nombre del cluster es @14-main
+2.4 Crear un usuario replicador
+sudo -u postgres psql -p 5432
+CREATE ROLE replicador WITH REPLICATION LOGIN PASSWORD 'abc123';
 GRANT USAGE ON SCHEMA public TO replicador;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO replicador;
-```
+2.5 Crear una base de datos y tabla de prueba
+CREATE DATABASE db_replica;
+\c db_replica
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100)
+);
+2.6 Crear la publicación (Publication)
+CREATE PUBLICATION pub_clientes FOR TABLE clientes; 
+SELECT * FROM pg_publication;  # listar las publicaciones que ya existen
+SELECT * FROM pg_stat_replication; # listar detalles de la replicacion
+ 
+📌 Paso 3: Configurar el Subscriber (Réplica, puerto 5433)
+3.1 Crear la misma estructura en el Subscriber
+sudo -u postgres psql -p 5433 # conectarse con el servidor secundario
+CREATE DATABASE db_replica;
+\c db_replica
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100)
+); 
+ # Verificar la estructura de la tabla creada
+\d clientes
+3.2 Crear la suscripción (Subscription)
+CREATE SUBSCRIPTION sub_clientes
+CONNECTION 'host=127.0.0.1 port=5432 user=replicator password=password123 dbname=db_replica'  
+PUBLICATION pub_clientes; 
+# Si todo está bien, PostgreSQL comenzará a sincronizar los datos.
 
-**Paso 6.** Inicializa el esclavo con `pg_basebackup`.
-
-Primero, detén al maestro si necesitas limpiar datos en el esclavo:
-```
-sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/maestro stop
-```
-Luego, ejecuta:
-```
-sudo -u postgres /usr/lib/postgresql/16/bin/pg_basebackup
-  -h 127.0.0.1 -p 5432 -D /var/lib/postgresql/esclavo 
-  -U replicador -Fp -Xs -P -R
-```
-Esto creará un archivo `standby.signal` automáticamente.
-
-
-**Paso 7.** Configura el esclavo (`postgresql.conf`).
-```
-sudo nano /var/lib/postgresql/esclavo/postgresql.conf
-```
-
-Asegúrate de tener:
-```
-port = 5433
-hot_standby = on
-```
-
-**Paso 8.** Inicia al maestro y al esclavo.
-```
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro -l maestro.log start
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo -l esclavo.log start
-```
-
-**Paso 9.**  Verifica la replicación.
-```
-psql -p 5432 -c "SELECT * FROM pg_stat_replication;"
-```
-
-**Paso 10.** Comprueba que el maestro y el esclavo están en ejecución desde la línea de comando del usuario `postgres`.
-```
-pg_lsclusters
-```
-
-### Tarea 2. Probar `failover` manual
-Simula la caída del maestro y promueve el esclavo a maestro.
-
-**Paso 1.** Detén al maestro.
-```
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/maestro stop
-```
-
-**Paso 2.** Promueve al esclavo.
-```
-sudo -u postgres /usr/lib/postgresql/15/bin/pg_ctl -D /var/lib/postgresql/esclavo promote
-```
-
-**Paso 3.** Valida la promoción.
-
-Intenta conectarte y escribe en la réplica, ahora promovida:
-```
-psql -p 5433
-```
-```sql
-CREATE TABLE test_failover(id INT);
-INSERT INTO test_failover VALUES (1);
-SELECT * FROM test_failover;
-```
-## Resultado esperado
-**Monitoreo del estado de la replicación**
-
-```sql
-Ver slots de replicación (Publisher)
+CREATE SUBSCRIPTION sub_clientes
+CONNECTION 'host=localhost port=5432 user=replicador password=abc123 dbname=db_replica'
+PUBLICATION pub_clientes;
+ 
+📌 Paso 4: Probar la replicación
+4.1 Insertar datos en el Publisher (puerto 5432)
+INSERT INTO clientes (nombre, email) VALUES 
+    ('Juan Pérez', 'juan@example.com'),
+    ('María López', 'maria@example.com');
+4.2 Verificar datos en el Subscriber (puerto 5433)
+SELECT * FROM clientes;
+Salida esperada:
+id |   nombre    |       email        
+----+-------------+-------------------
+  1 | Juan Pérez  | juan@example.com
+  2 | María López | maria@example.com
+ 
+📌 Paso 5: Monitorear el estado de la replicación
+5.1 Ver slots de replicación (Publisher)
 SELECT * FROM pg_replication_slots;
-```
-```sql
-Ver estado de la suscripción (Subscriber)
+5.2 Ver estado de la suscripción (Subscriber)
 SELECT * FROM pg_stat_subscription;
- ```
-```
- Posibles errores y soluciones
-
+ 
+🔎 Posibles Errores y Soluciones
 ❌ Error: "No se pudo iniciar la replicación"
 ✔ Verifica que wal_level = logical en el Publisher.
 ✔ Confirma que el usuario replicator existe y tiene permisos.
 ❌ Datos no aparecen en el Subscriber
 ✔ Ejecuta en el Subscriber:
 ALTER SUBSCRIPTION sub_clientes REFRESH PUBLICATION;
-```
  
-### Conclusión
-¡Has configurado exitosamente la replicación lógica en PostgreSQL 16 en un entorno local!
-```
-- Publisher (5432): envía cambios.
-- Subscriber (5433): recibe cambios en tiempo real.
-```
+✅ Conclusión
+¡Has configurado exitosamente replicación lógica en PostgreSQL 14!
+🔹 Publisher (5432): Envía cambios.
+🔹 Subscriber (5433): Recibe cambios en tiempo real.
+🚀 Próximo paso: Prueba replicar múltiples tablas o configurar filtros (WHERE en publicaciones).
+
