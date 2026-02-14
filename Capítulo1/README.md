@@ -171,8 +171,7 @@ SELECT * FROM cuentas WHERE nombre = 'Juan';
  ----+--------+-------
   1 | Juan   |   650
  (1 row)
-```
- 
+``` 
 
 ## Resultado esperado
 -	El comando `SELECT ... FOR UPDATE` adquirió un bloqueo exclusivo sobre la fila de la cuenta de Juan en la `Sesión A`.
