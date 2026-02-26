@@ -39,14 +39,14 @@ sudo pg_lsclusters
 Salida esperada:
 
 Ver Cluster Port Status Owner    Data directory
-14  main    5432 online postgres /var/lib/postgresql/16/main
-14  replica 5433 online postgres /var/lib/postgresql/16/replica
+16  main    5432 online postgres /var/lib/postgresql/16/main
+16  replica 5433 online postgres /var/lib/postgresql/16/replica
  
 📌 Paso 2: Configurar el Publisher (Primario, puerto 5432)
 
 2.1 Editar postgresql.conf para habilitar replicación lógica
 
-sudo nano /etc/postgresql/14/main/postgresql.conf
+sudo nano /etc/postgresql/16/main/postgresql.conf
 
 Asegúrate de que estas líneas estén configuradas:
 
@@ -69,7 +69,7 @@ host    localhost     replicator      127.0.0.1/32          md5
 
 2.3 Reiniciar PostgreSQL
 
-sudo systemctl restart postgresql@14-main  # nombre del cluster es @14-main
+sudo systemctl restart postgresql@16-main  # nombre del cluster es @16-main
 
 2.4 Crear un usuario replicador
 
@@ -164,7 +164,7 @@ ALTER SUBSCRIPTION sub_clientes REFRESH PUBLICATION;
  
 ✅ Conclusión
 
-¡Has configurado exitosamente replicación lógica en PostgreSQL 14!
+¡Has configurado exitosamente replicación lógica en PostgreSQL 16!
 🔹 Publisher (5432): Envía cambios.
 🔹 Subscriber (5433): Recibe cambios en tiempo real.
 🚀 Próximo paso: Prueba replicar múltiples tablas o configurar filtros (WHERE en publicaciones).
