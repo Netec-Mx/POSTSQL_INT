@@ -53,7 +53,7 @@ En donde:
 	wal_level = replica
 	archive_mode = on
 	max_wal_senders = 2
-	archive_command = cp %p /var/lib/postgresql/archive/%f
+	archive_command = 'cp %p /var/lib/postgresql/archive/%f'
 	```
 
 -	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`.

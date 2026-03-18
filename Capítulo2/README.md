@@ -1,11 +1,18 @@
 # Práctica 2. Índices y tipos de datos en PostgreSQL
+
+<br/><br/>
 ## Objetivos
 Al finalizar la práctica, serás capaz de:
 - Utilizar de manera efectiva los diferentes tipos de datos que existen en PostgreSQL.
 - Aprender a indexar diferentes tipos de datos y cómo utilizar la exclusión de `constraints`.
 
+
+<br/><br/>
+
 ## Duración aproximada
 - 120 minutos.
+
+<br/><br/>
 
 ## Objetivo visual
 
@@ -22,6 +29,8 @@ CREATE TABLE reseñas (
     calificacion INT CHECK (calificacion BETWEEN 1 AND 5),
     fecha TIMESTAMP DEFAULT NOW()
 );
+
+
 ```
 ```sql
 INSERT INTO reseñas (autor, comentario, calificacion)
@@ -46,6 +55,8 @@ Esta consulta aprovecha el índice parcial si `calificacion > 4`,
  reduciendo el número de filas escaneadas. Se espera un `Sequential Scan` si no se usa el índice.
 `EXPLAIN ANALYZE SELECT * FROM reseñas WHERE calificacion > 4 AND comentario IS NOT NULL;`
 
+<br/><br/>
+
 
 ### Tarea 2. Manejo de encuestas con `ARRAY` y `ENUM`
 
@@ -54,6 +65,7 @@ Esta consulta aprovecha el índice parcial si `calificacion > 4`,
 ```sql
 CREATE TYPE nivel_satisfaccion AS ENUM ('muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto');
 ```
+
 ```sql
 CREATE TABLE encuestas (
     id SERIAL PRIMARY KEY,
@@ -62,6 +74,7 @@ CREATE TABLE encuestas (
     fecha DATE DEFAULT CURRENT_DATE
 );
 ```
+
 ```sql
 INSERT INTO encuestas (respuestas, satisfaccion)
 SELECT
@@ -69,6 +82,7 @@ SELECT
     ARRAY['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'][(random()*5)::int]
 FROM generate_series(1, 500);
 ```
+
 ```sql
 CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, satisfaccion);
 ```
@@ -76,6 +90,9 @@ CREATE INDEX idx_respuestas_satisfaccion ON encuestas USING spgist (respuestas, 
 Esta consulta puede beneficiarse del índice `SP-GiST` en satisfaccion,
  si el optimizador detecta que es más eficiente que un escaneo secuencial.
 `EXPLAIN ANALYZE SELECT * FROM encuestas WHERE satisfaccion = 'muy_alto';`
+
+<br/><br/>
+
 
 ## Tarea 3. Manejo de preferencias de usuario usando el tipo `JSONB` y el índice `GIN`.
 
@@ -89,6 +106,7 @@ CREATE TABLE usuarios (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
 **Paso 2.** Inserta los datos en la tabla.
 
 ```sql
@@ -105,7 +123,6 @@ FROM generate_series(1, 1000) i;
 **Paso 3.** Crea los índices.
 
 ```sql
-
 CREATE INDEX idx_tema ON usuarios ((preferencias->>'tema'));
 ```
 
@@ -116,6 +133,7 @@ EXPLAIN ANALYZE SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}
 ```
 
 Esta consulta utiliza el índice `GIN` para realizar búsquedas eficientes dentro del campo `JSONB`. Es mucho más rápido que escanear fila por fila.
+
 
 **Comentarios de los pasos anteriores y el código**
 
@@ -130,6 +148,8 @@ El índice se crea sobre esa expresión, para acelerar búsquedas por ese campo 
 
 Con esta técnica, puedes usar el valor del campo "tema" como si fuera una columna común y obtener beneficios de rendimiento.
 
+<br/>
+
 2.  `SELECT * FROM usuarios WHERE preferencias @> '{"tema": "oscuro"}';`
 
 Busca todos los registros de la tabla `usuarios` donde el campo preferencias contiene el par clave-valor `"tema": "oscuro"`.
@@ -139,6 +159,7 @@ El operador `@>` es el operador de contención de `JSONB` en PostgreSQL.
 Esto significa que el campo `preferencias` debe tener al menos esa clave y valor. Puede tener más elementos, pero `"tema": "oscuro"` debe existir dentro del `JSON`.
 
 En este ejemplo, este `JSONB` **sí** califica:
+
 ```
 {
   "tema": "oscuro",
@@ -152,7 +173,12 @@ Pero este **no**:
   "tema": "claro"
 }
 ```
+
+<br/>
+
 Se observa la compatibilidad con índices `GIN`, lo que permite búsquedas rápidas, incluso dentro de estructuras complejas como `JSON`.
+
+<br/><br/>
 
 ### Tarea 4. Manejo de una tabla de sensores con índice `BRIN` y `BTREE`
 
@@ -196,11 +222,13 @@ WHERE indrelid = 'sensores'::regclass;
 Esta consulta debería aprovechar el índice `BRIN` si las fechas están ordenadas.
  El objetivo es reducir la cantidad de bloques leídos del disco.
 
+
 ```sql
 EXPLAIN ANALYZE
 SELECT * FROM sensores
 WHERE fecha BETWEEN now() - INTERVAL '2 days' AND now() - INTERVAL '1 day';
 ```
+
 
 **Paso 4.** Revisa el espacio ocupado por los índices.
 
@@ -210,6 +238,8 @@ SELECT indexrelid::regclass AS index_name,
 FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
+
+<br/>
 
 **Comentarios**
 
@@ -225,9 +255,11 @@ WHERE indrelid = 'sensores'::regclass;
 
 - `pg_size_pretty(...)`: convierte esos bytes a un formato legible como 12 MB, 180 kB, etcétera.
 
+<br/>
+
 **Preguntas adicionales del ejercicio**
 
-¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
-¿Qué tan costoso en disco sería mantener varios índices?
+1. ¿El índice `BRIN` realmente ocupa menos espacio que `BTREE`?
+2. ¿Qué tan costoso en disco sería mantener varios índices?
 
 ## Resultado esperado
