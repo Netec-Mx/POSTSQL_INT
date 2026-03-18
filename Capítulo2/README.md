@@ -239,6 +239,8 @@ FROM pg_index
 WHERE indrelid = 'sensores'::regclass;
 ```
 
+
+
 <br/>
 
 **Comentarios**
