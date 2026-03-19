@@ -151,7 +151,7 @@ SELECT
 FROM pg_indexes
 WHERE tablename = 'pizzerias';
 
--- Opción man completa tomada
+-- Opción man completa 
 
 SELECT 
     i.relname AS index_name,
@@ -301,6 +301,6 @@ SELECT * FROM pizzerias;
 
 Diferencia crítica:
 
-* `geometry` → trabaja en plano (grados si SRID 4326)
-* `geography` → trabaja sobre la Tierra (metros )
+* `geometry`: trabaja en plano (grados si SRID 4326)
+* `geography`: trabaja sobre la Tierra (metros )
 
