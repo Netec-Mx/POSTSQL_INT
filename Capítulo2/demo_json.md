@@ -144,6 +144,7 @@ WHERE detalles_extra ? 'isbn';
 * `?` = “¿existe esta clave?”
 * Muy común en búsquedas dinámicas
 
+<br/><br/>
 
 
 ### 8. Filtrar valores dentro del JSON
