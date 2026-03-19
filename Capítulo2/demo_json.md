@@ -267,6 +267,7 @@ WHERE detalles_extra ? 'procesador';
 | `->> index` | Accede a array como texto    | `detalles->'tags'->>0`        |
 
 
+<br/><br/>
 
 ### Funciones útiles JSONB
 
