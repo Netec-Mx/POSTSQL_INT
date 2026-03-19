@@ -70,7 +70,7 @@ ON a.ip << r.red;
 
 > `<<` significa: “esta IP está contenida dentro de esta red CIDR”
 
----
+<br/><br/>
 
 ### 3.2 Detectar accesos fuera de redes permitidas
 
