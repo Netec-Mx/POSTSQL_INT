@@ -200,12 +200,13 @@ EXPLAIN ANALYZE SELECT * FROM periodos WHERE rango_date && '[2025-01-05,2025-01-
 <br/><br/>
 
 >**Notas:**
-
+>
 > Un RANGE no guarda un valor… guarda un intervalo.
 > PostgreSQL entiende matemáticamente ese intervalo, por eso nos permite responder cosas como:
 >
 > * si algo está dentro
 > * si dos periodos chocan
 > * si están pegados
-> * sin que tú escribas lógica compleja
+>
+> Sin que escribir lógica compleja
 
