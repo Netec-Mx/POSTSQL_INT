@@ -244,7 +244,7 @@ WHERE detalles_extra ? 'procesador';
 
 <br/><br/>
 
-## **Tablas de ayuda
+## Tablas de ayuda
 
 ### JSON vs JSONB en PostgreSQL**
 
