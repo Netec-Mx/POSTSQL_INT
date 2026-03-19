@@ -65,7 +65,7 @@ SELECT count(*) from periodos;
 
 <br/><br/>
 
-### ¿Un valor está dentro del rango? (`@>`)
+### 4. ¿Un valor está dentro del rango? (`@>`)
 
 ```sql
 
@@ -197,6 +197,7 @@ EXPLAIN ANALYZE SELECT * FROM periodos WHERE rango_date && '[2025-01-05,2025-01-
 | upper_inc() | ¿Incluye fin?    |
 
 
+<br/><br/>
 
 >**Notas:**
 > Un RANGE no guarda un valor… guarda un intervalo.
