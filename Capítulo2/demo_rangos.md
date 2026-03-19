@@ -181,7 +181,7 @@ EXPLAIN ANALYZE SELECT * FROM periodos WHERE rango_date && '[2025-01-05,2025-01-
 | @>       | Contiene valor | rango @> 5         |   
 | <@       | Está dentro de | 5 <@ rango         |   
 | &&       | Se traslapan   | rango1 && rango2   |    
-| `-|-`     | Son adyacentes | rango1 `-|-` rango2 |
+| `-\|-`     | Son adyacentes | rango1 `-\|-` rango2 |
 
 
 <br/><br/>
