@@ -160,6 +160,29 @@ EXPLAIN ANALYZE SELECT * FROM periodos WHERE rango_date && '[2025-01-05,2025-01-
 
 <br/><br/>
 
+
+### 11. Verificar rangos adyacentes (`-|-`)
+
+```sql
+
+SELECT 
+    '[1,5)'::int4range -|- '[5,10)'::int4range AS adyacentes,
+    '[1,5)'::int4range -|- '[6,10)'::int4range AS separados,
+    '[1,5]'::int4range -|- '[5,10)'::int4range AS traslapados;
+
+```
+
+* `[1,5)` y `[5,10)` → **TRUE**
+  Están pegados exactamente (adyacentes)
+
+* `[1,5)` y `[6,10)` → **FALSE**
+  Hay un hueco (no son adyacentes)
+
+* `[1,5]` y `[5,10)` → **FALSE**
+  Se traslapan en el 5
+
+<br/></br/>
+
 ### TABLAS DE AYUDA 
 
 
