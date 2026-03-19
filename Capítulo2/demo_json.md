@@ -246,7 +246,7 @@ WHERE detalles_extra ? 'procesador';
 
 ## Tablas de ayuda
 
-### JSON vs JSONB en PostgreSQL**
+### JSON vs JSONB en PostgreSQL
 
 | Tipo  | ¿Para qué sirve?                            | Ejemplo rápido            |
 | ----- | ------------------------------------------- | ------------------------- |
