@@ -181,7 +181,7 @@ SELECT
 * `[1,5]` y `[5,10)` → **FALSE**
   Se traslapan en el 5
 
-<br/></br/>
+<br/><br/>
 
 ### TABLAS DE AYUDA 
 
