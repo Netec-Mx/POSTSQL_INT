@@ -55,7 +55,9 @@ INSERT INTO productos (nombre, categoria_id)
 SELECT 
     'Producto ' || i,
     (random() * 9 + 1)::int
-FROM generate_series(1, 100000) AS i;
+FROM generate_series(1, 100000) AS i;  
+
+-- Juega más adelante y cambia 100000 por 1000000
 ```
 
 <br/><br/>
@@ -257,6 +259,20 @@ WHERE categoria_id IN (SELECT id FROM cat);
 | SUBQUERY       |      |        |               |            |
 | CTE            |      |        |               |            |
 | CORRELACIONADA |      |        |               |            |
+
+<br/>
+
+* **Scan:** Busca en el EXPLAIN ANALYZE algo como `Seq Scan`, `Index Scan`, `Bitmap Heap Scan`
+* **Tiempo:** Busca en el PLAN `Execution Time: ?? ms`
+* **Usp de índice:** Busca el el PLAN si `Index Scan` o `Bitmap Index Scan` o solo `Seq Scan`
+* **Comentario:**
+    * Usó índice correctamente
+    * Hizo Seq Scan porque no hay índice
+    * El CTE se materializó
+    * La subconsulta fue optimizada como JOIN
+    * La correlacionada ejecuta múltiples loops
+    * etc.
+* No nos interesa que copies el plan, nos interesa que entiendas qué pasó.
 
 <br/><br/>
 
