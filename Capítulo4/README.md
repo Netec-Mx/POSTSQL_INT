@@ -1,79 +1,138 @@
 # Práctica 4. Respaldos
+
+<br/><br/>
+
 ## Objetivo
 Al finalizar la práctica, serás capaz de:
 - Realizar respaldos físicos en PostgreSQL y ajustar de manera avanzada Autovacuum para mantener el rendimiento en bases de datos transaccionales.
 
+<br/><br/>
+
 ## Duración aproximada
 - 120 minutos.
+
+<br/><br/>
 
 ## Objetivo visual
 En estas prácticas se verá cómo realizar respaldos y restauraciones físicas de PostgreSQL, así como la herramienta Autovacuum.
 
 ![diagrama1](../images/respaldos.jpg)
 
+<br/><br/>
+
 ## Instrucciones
 
 ### Tarea 1. Hacer un respaldo del clúster PostgreSQL
 
 **Paso 1.** Crea el usuario "replicador" con el rol de réplica.
-Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecuta el siguiente comando `SQL:
-CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';`
+Debes conectarte a tu instancia de PostgreSQL como un superusuario (por ejemplo, `postgres`) y ejecuta el siguiente comando:
+
+```sql
+
+CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segura';
+
+```
+
+<br/><br/>
 
 **Paso 2.** Configura `pg_hba.conf` en el servidor primario.
 -	El archivo `pg_hba.conf` controla la autenticación de clientes de PostgreSQL. Necesitas agregar una entrada que permita al usuario replicador conectarse desde la máquina donde ejecutarás `pg_basebackup`.
 -	Localiza el archivo `pg_hba.conf`. Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL; por ejemplo, `/var/lib/postgresql/16/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo (SO).
+
+```sql
+
+show hba_file;
+
+show config_file;
+
+```
+<br/><br/>
+
 -	Edita el archivo `pg_hba.conf`. Abre el archivo con un editor de texto (requerirás permisos de superusuario, como `sudo`).
 -	Agrega la siguiente línea (o similar):
 
-	`host    replication     replicador      0.0.0.0/0               md5`
+```text
+	host    replication     replicador      0.0.0.0/0               md5
+```
 
 En donde:  
 - `host`: indica que la conexión es a través de `TCP/IP`.
 - `replication`: es un `pseudo-database` especial que se usa para conexiones de replicación.
 - `replicador`: es el nombre del usuario que creaste.
-- `0.0.0.0/0`: permite la conexión desde cualquier dirección IP. Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
+- `0.0.0.0/0`: permite la conexión desde cualquier dirección IP.
+- Para un entorno de producción, es **altamente recomendable** que cambies esto a la dirección IP específica de la máquina desde la que ejecutarás `pg_basebackup` (ejemplo: `192.168.1.100/32` si la IP es `192.168.1.100`).
 - `MD5`: especifica que se utilizará autenticación con contraseña `MD5`.
 
+<br/><br/>
+
 **Paso 3.** Recarga la configuración de PostgreSQL.
--	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto. Puedes hacerlo de una de las siguientes maneras.
+-	Después de modificar `pg_hba.conf`, necesitas recargar la configuración de PostgreSQL para que los cambios surtan efecto.
+-	Puedes hacerlo de una de las siguientes maneras.
 	Usando `SQL` (recomendado si puedes conectarte):
-	```sql
+
+```sql
 	SELECT pg_reload_conf();
-	```
+```
+
 -	 la línea de comandos (usando `systemd` o `init.d`):
 	`sudo systemctl reload postgresql`
+
 -	`O`, dependiendo de tu versión y SO, podría ser:
 	`sudo /etc/init.d/postgresql reload`
 
+<br/><br/>
+
 **Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`.
 -	Crea el directorio `/var/lib/postgresql/archive` desde el usuario `posgresql`.
+
 	```
 	mkdir /var/lib/postgresql/archive
 	```
+ 
 -	Cambia en `postgresql.conf` a la ruta válida en tu sistema si deseas archivar los Write-Ahead Log (WAL) de rotación usando la variable `archive_command`.
+  
 -	Asegúrate de que el `wal_level`, `archive_mode` y `archive_command` estén configurados para permitir respaldos.
-	```
+
+<br/><br/>
+
+```
 	wal_level = replica
 	archive_mode = on
 	max_wal_senders = 2
-	archive_command = cp %p /var/lib/postgresql/archive/%f
-	```
+	archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+```
 
 -	El valor `cp %p /var/lib/postgresql/archive/%f` indica que hay que copiar cada archivo WAL generado por PostgreSQL al directorio `/var/lib/postgresql/archive/`.
 	- `%p`: ruta completa del archivo WAL original.
 	- `%f`: nombre del archivo WAL.
--	La variable `max_wal_senders` define cuántos procesos de envío de WAL pueden ejecutarse simultáneamente. 
+   
+-	La variable `max_wal_senders` define cuántos procesos de envío de WAL pueden ejecutarse simultáneamente.
+  
 -	Después de cambiar estos parámetros, reinicia PostgreSQL:
-	`sudo systemctl restart postgresql`.
+
+```sql
+	sudo systemctl restart postgresql
+```
+
+<br/><br/>
 
 **Paso 4.** Ejecuta `pg_basebackup`.
 -	Crea el directorio donde se harán los respaldos desde el `usuario postgre`:
-	`mdkir /var/lib/postgresql/respaldos`.
--	Ahora, desde la máquina donde deseas almacenar el respaldo (que puede ser el mismo servidor o uno diferente, siempre que la red lo permita y `pg_hba.conf` esté configurado correctamente), puedes ejecutar desde la línea de comandos del shell tu comando `pg_basebackup`:
-`pg_basebackup -h tu_ip_servidor_primario -D /respaldos/pg -Ft -z -P -U usuario_replicador`.
 
-Ejemplo:
-`pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador`.
+```bash
+mdkir /var/lib/postgresql/respaldos
+```
+
+-	Ahora, desde la máquina donde deseas almacenar el respaldo (que puede ser el mismo servidor o uno diferente, siempre que la red lo permita y `pg_hba.conf` esté configurado correctamente), puedes ejecutar desde la línea de comandos del shell tu comando `pg_basebackup`:
+
+```bash
+pg_basebackup -h tu_ip_servidor_primario -D /respaldos/pg -Ft -z -P -U usuario_replicador
+
+# Ejemplo
+
+pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador
+
+```
 
 En donde:
 - `localhost`: es la máquina local.
@@ -84,14 +143,27 @@ En donde:
 - `P`: muestra una barra de progreso durante la copia.
 - `U replicador`: usuario de PostgreSQL que ejecuta la copia. El usuario de la base de datos debe tener permisos de replicación.
 
-**Archivos generados del respaldo con `pg_basebackup`**
+<br/><br/>
+
+### Archivos generados del respaldo con `pg_basebackup`
+
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
+
+<br/>
 - `pg_wal.tar.gz`: contiene los archivos del WAL necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
+
+
+<br/>
+
 - `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
+
+<br/><br/>
 
 ### Tarea 2. Restaurar el clúster de PostgreSQL
 
 Del ejercicio anterior, restaura todo el clúster de PostgreSQL. Después verifica que las bases de datos y las tablas junto con sus datos existen y que los datos originales se mantengan.
+
+<br/><br/>
 
 **Paso 1.** Detén PostgreSQL:
 `sudo systemctl stop postgresql`
@@ -125,15 +197,13 @@ sudo chmod 700 /var/lib/postgresql/16/main
 **Paso 8.** Verifica `logs` y estado:
 	`tail -f /var/log/postgresql/postgresql-16-main.log`
 
+<br/><br/>
+
 ### Tarea 3. Uso de Autovacuum: configuración y monitoreo en PostgreSQL
 Comprenderás el funcionamiento del proceso Autovacuum en PostgreSQL, la configuración de sus parámetros y el monitoreo de su actividad.
 
-**Requisitos**
-- PostgreSQL instalado (versión 9.6 o superior).
-- Acceso a una base de datos con permisos de superusuario o suficientes privilegios.
-- Herramienta `psql` o `pgAdmin` para conectarse a la base de datos.
 
-**Paso 1.** Verificación del estado de Autovacuum.
+#### **Paso 1.** Verificación del estado de Autovacuum.
 1.	Conéctate a la base de datos PostgreSQL usando `psql`.
 ```
 psql -U postgres -d nombre_base_datos
@@ -152,7 +222,7 @@ SELECT name, setting, short_desc FROM pg_settings
 WHERE name LIKE 'autovacuum%' OR name LIKE 'vacuum%';
 ```
 
-**Paso 2.** Crea una tabla de prueba y generación de actividad.
+#### **Paso 2.** Crea una tabla de prueba y generación de actividad.
 
 1.	Crea una tabla de prueba.
 
@@ -179,7 +249,8 @@ UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 UPDATE laboratorio_autovacuum SET dato = md5(random()::text);
 ```
 
-**Paso 3.** Monitorea las estadísticas.
+
+#### **Paso 3.** Monitorea las estadísticas.
 
 1.	Verifica las estadísticas de la tabla.
 
@@ -197,7 +268,8 @@ FROM pg_stat_activity
 WHERE query LIKE '%autovacuum%' OR query LIKE '%VACUUM%';
 ```
 
-**Paso 4.** Configura los parámetros.
+
+#### **Paso 4.** Configura los parámetros.
 
 1.	Modifica los parámetros de Autovacuum para la tabla de prueba.
 
@@ -215,7 +287,7 @@ FROM pg_class
 WHERE relname = 'laboratorio_autovacuum';
 ```
 
-**Paso 5.** Ejecuta `VACUUM` y `ANALYZE` manualmente.
+#### **Paso 5.** Ejecuta `VACUUM` y `ANALYZE` manualmente.
 
 1.	Ejecuta `VACUUM` manualmente y observa la diferencia.
 
@@ -229,7 +301,7 @@ VACUUM (VERBOSE) laboratorio_autovacuum;
 ANALYZE VERBOSE laboratorio_autovacuum;
 ```
 
-**Paso 6.** Analiza los resultados.
+#### **Paso 6.** Analiza los resultados.
 
 1.	Vuelve a consultar las estadísticas después de las operaciones.
 
@@ -241,14 +313,18 @@ WHERE relname = 'laboratorio_autovacuum';
 
 2.	Compara los resultados antes y después de las operaciones.
 
-**Preguntas del ejercicio**
+<br/><br/>
+
+#### **Preguntas del ejercicio**
 1.	¿Cuántas tuplas muertas se generaron antes de que Autovacuum actuara?
 2.	¿Cuánto tiempo tardó Autovacuum en ejecutarse automáticamente después de las actualizaciones?
 3.	¿Cómo afectó la configuración personalizada al comportamiento de Autovacuum?
 4.	¿Qué diferencias observó entre el `VACUUM` manual y el automático?
 5.	¿Por qué es importante el proceso `Autovacuum` en PostgreSQL?
 
-**Extensión opcional**
+<br/><br/>
+
+#### **Extensión opcional**
 1.	Desactiva `Autovacuum` para la tabla de prueba y observa el comportamiento.
 
 ```sql
@@ -258,8 +334,10 @@ ALTER TABLE laboratorio_autovacuum SET (autovacuum_enabled = false);
 2.	Genera más actualizaciones y observa el crecimiento de tuplas muertas sin `Autovacuum`.
 3.	Vuelve a activar `Autovacuum` y observa cómo se recupera la situación.
 
+<br/><br/>
 
 ## Resultado esperado
+
 Para realizar un respaldo físico, ejecuta:
 
 `pg_basebackup -h localhost -D /var/lib/postgresql/respaldos -Ft -z -P -U replicador.`
