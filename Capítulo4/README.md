@@ -149,11 +149,7 @@ En donde:
 
 - `base.tar.gz`: contiene una copia completa y consistente del directorio de datos de tu base de datos (excluyendo los archivos WAL activos en el momento del backup, que están en `pg_wal.tar.gz`).
 
-<br/>
 - `pg_wal.tar.gz`: contiene los archivos del WAL necesarios para que la base de datos se recupere y alcance un estado consistente al iniciar después de la restauración.
-
-
-<br/>
 
 - `backup_manifest`: contiene metadatos sobre el backup, la lista de archivos incluidos, las sumas de verificación y la información del punto de control (`checkpoint`) del backup, no se extrae directamente en el directorio de datos para el inicio del servidor.
 
