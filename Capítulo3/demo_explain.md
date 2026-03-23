@@ -160,7 +160,7 @@ FROM empleados;
 
 <br/><br/>
 
-## 4. COSTS OFF (para enseñar limpio)
+## 4. COSTS OFF
 
 ```sql
 EXPLAIN (COSTS OFF) 
