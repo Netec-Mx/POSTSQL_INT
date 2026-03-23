@@ -1,5 +1,5 @@
 
-# Demo/POCs: Tablas externas con RDW - Foreign Data Wrapper
+# Demo/POCs: Tablas externas con FDW - Foreign Data Wrapper
 
 ## 1. Crear archivo CSV
 
