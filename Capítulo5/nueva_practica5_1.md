@@ -10,7 +10,10 @@ Configurar replicación lógica entre dos instancias de PostgreSQL en la misma m
 
 ## Objectivo Visual
 
-![Imagen Clúster PostgreSQL 16](../images/cc.png)
+
+<div align="center">
+  <img src="../images/cc.png" alt="Imagen Clúster PostgreSQL 16" width="50%">
+</div>
 
 <br/><br/>
 
