@@ -1,41 +1,254 @@
-# Nombre del laboratorio 
+# Práctica 3. Afinación de SQL
 
-## Objetivo de la práctica:
+<br/>
+<br/>
+
+## Objetivo
 Al finalizar la práctica, serás capaz de:
-- Objetivo1
-- Objetivo2
-- Objetivo3
+- Aplicar funciones de agregación y escalares en consultas SQL sobre PostgreSQL.
 
-## Objetivo Visual 
-Crear un diagrama o imagen que resuma las actividades a realizar, un ejemplo es la siguiente imagen. 
+<br/>
+<br/>
 
-![diagrama1](../images/img1.png)
+## Duración aproximada
+- 90 minutos.
 
-## Duración aproximada:
-- xx minutos.
+<br/>
+<br/>
 
-## Tabla de ayuda:
-Agregar una tabla con la información que pueda requerir el participante durante el laboratorio, como versión de software, IPs de servers, usuarios y credenciales de acceso.
-| Contraseña | Correo | Código |
-| --- | --- | ---|
-| Netec2024 | edgardo@netec.com | 123abc |
+## Objetivo visual
+En la siguiente práctica, verás cómo analizar y mejorar el desempeño de las sentencias SQL en PostgreSQL.
 
-## Instrucciones 
-<!-- Proporciona pasos detallados sobre cómo configurar y administrar sistemas, implementar soluciones de software, realizar pruebas de seguridad, o cualquier otro escenario práctico relevante para el campo de la tecnología de la información -->
-### Tarea 1. Descripción de la tarea a realizar.
-Paso 1. Debe de relatar el instructor en verbo infinito, claro y conciso cada actividad para ir construyendo paso a paso en el objetivo de la tarea.
+![diagrama3](../images/tuning.png)
 
-Paso 2. <!-- Añadir instrucción -->
+<br/>
+<br/>
 
-Paso 3. <!-- Añadir instrucción -->
+## Instrucciones
 
-### Tarea 2. Descripción de la tarea a realizar.
-Paso 1. Debe de relatar el instructor en verbo infinito, claro y conciso cada actividad para ir construyendo paso a paso en el objetivo de la tarea.
+<br/>
 
-Paso 2. <!-- Añadir instrucción -->
+### Tarea 1. Comparar el plan de ejecución con y sin índice
 
-Paso 3. <!-- Añadir instrucción -->
+**Paso 1.** Crea los elementos necesarios para la práctica.
 
-### Resultado esperado
-En esta sección, se debe mostrar el resultado esperado de nuestro laboratorio
-![imagen resultado](../images/img3.png)
+```sql
+CREATE TABLE productos (
+  id SERIAL PRIMARY KEY,
+  nombre TEXT,
+  categoria TEXT,
+  precio NUMERIC
+);
+INSERT INTO productos(nombre, categoria, precio)
+SELECT 'Producto ' || i, 'Categoria ' || (i % 10), i*10
+FROM generate_series(1, 100000) AS i;
+```
+
+<br/>
+
+**Paso 2.** Ejecuta el primer `ANALYZE`.
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
+```
+
+<br/>
+
+**Paso 3.** Crea el índice.
+```sql
+CREATE INDEX idx_categoria ON productos(categoria);
+```
+
+<br/>
+
+**Paso 4.** Ejecuta `ANALYZE` con el índice y compara los resultados.
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM productos WHERE categoria = 'Categoria 5';
+```
+Compara `Seq Scan` con `Index Scan`.
+
+<br/>
+<br/>
+
+### Tarea 2. Afinar una consulta lenta reescribiéndola
+
+**Paso 1.** Consulta lenta (subconsulta correlacionada).
+```sql
+SELECT nombre FROM productos
+WHERE categoria IN (
+  SELECT categoria FROM productos WHERE precio > 500000
+);
+```
+
+<br/>
+
+**Paso 2.** Realiza ahora la consulta usando `JOIN`.
+```sql
+SELECT DISTINCT p1.nombre
+FROM productos p1
+JOIN productos p2 ON p1.categoria = p2.categoria
+WHERE p2.precio > 500000;
+```
+
+<br/>
+
+**Paso 3.** Compara los resultados con `ANALYZE`. ¿Cuales son tus conclusiones?
+
+<br/>
+<br/>
+
+
+### Tarea 3. Crear una vista materializada para acelerar reportes
+
+**Paso 1.** Crea la vista.
+```sql
+CREATE MATERIALIZED VIEW resumen_categoria AS
+SELECT categoria, COUNT(*) AS total_productos, AVG(precio) AS precio_promedio
+FROM productos
+GROUP BY categoria;
+```
+
+<br/>
+
+**Paso 2.** Consulta.
+```sql
+SELECT * FROM resumen_categoria ORDER BY precio_promedio DESC LIMIT 5;
+```
+
+<br/>
+
+**Paso 3.** Refresca la vista y comprueba los cambios.
+```sql
+REFRESH MATERIALIZED VIEW resumen_categoria;
+
+--Se obtienen los mismos resultados dado que no hubieron cambios en los datos.
+```
+
+<br/>
+<br/>
+
+### Tarea 4. Forzar el uso de `Nested Loop` y analizar el rendimiento
+
+**Paso 1.** Establece el ambiente de la práctica.
+
+```sql
+SET enable_hashjoin = off;
+SET enable_mergejoin = off;
+```
+
+<br/>
+
+**Paso 2.** Verifica con `ANALYZE` el comportamiento del `nested loop`.
+
+```sql
+EXPLAIN ANALYZE
+SELECT p1.nombre, p2.nombre
+FROM productos p1
+JOIN productos p2 ON p1.categoria = p2.categoria
+WHERE p1.precio < 100 AND p2.precio > 1000;
+
+-- Anota los resultados obtenidos.
+
+```
+
+<br/>
+
+**Paso 3.** Restablece variables de configuración.
+```sql
+RESET enable_hashjoin;
+RESET enable_mergejoin;
+RESET enable_nestloop;
+
+-- Vuelve a ejecutar el EXPLAIN ANALIZE y anota los resultados
+-- ¿Que PLAN dió el mejor desempeño?
+```
+
+<br/>
+<br/>
+
+### Tarea adicional (opcional). Uso de `pg_stat_statements` para detectar consultas costosas
+
+Utiliza la extensión `pg_stat_statements` para capturar y analizar el rendimiento de las consultas ejecutadas, identificando aquellas con mayor costo total, frecuencia o tiempo promedio.
+
+<br/>
+
+**Paso 1.** Habilita `pg_stat_statements`.
+
+Edita el archivo `postgresql.conf` (debes tener permisos de superusuario).
+
+En Ubuntu, normalmente en:
+`sudo nano /etc/postgresql/15/main/postgresql.conf`.
+
+Agrega o descomenta:
+`shared_preload_libraries = 'pg_stat_statements'`.
+
+Reinicia PostgreSQL:
+`sudo systemctl restart postgresql`.
+
+<br/>
+
+**Paso 2.** Crea la extensión en la base de datos.
+```sql
+Entra a psql como usuario `postgres` y ejecuta el siguiente comando:
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+```
+
+<br/>
+
+**Paso 3.** Ejecuta algunas consultas para que se registren.
+
+Consultas de prueba:
+```sql
+SELECT COUNT(*) FROM productos WHERE precio > 500;
+SELECT AVG(precio) FROM productos WHERE categoria = 'Categoria 3';
+SELECT * FROM productos WHERE nombre ILIKE '%123%';
+```
+
+<br/>
+
+**Paso 4.** Consulta estadísticas.
+
+```sql
+SELECT query, calls, total_exec_time, mean_plan_time, rows
+FROM pg_stat_statements
+ORDER BY total_exec_time DESC
+LIMIT 5;
+```
+
+<br/>
+
+**Columnas clave**
+- Revisa los valores de las siguientes columnas:
+- `query`: la consulta que se ejecutó.
+- `calls`: veces que se ejecutó.
+- `total_time`: suma del tiempo total.
+- `mean_time`: tiempo promedio por llamada.
+- `rows`: total de filas devueltas.
+
+<br/>
+
+**Paso 5.** Puedes reiniciar el contador de estadísticas (opcional).
+
+```sql
+SELECT pg_stat_statements_reset();
+```
+
+<br/>
+
+**Recomendaciones**
+- Úsalo junto con `auto_explain` para registrar planes automáticos en el `log`.
+- Ideal para entornos de desarrollo y pruebas antes de producción.
+- No dejes `pg_stat_statements` activado sin monitoreo en bases sensibles si hay preocupación por `overhead` mínimo `(~1-2%)`.
+
+<br/>
+
+## Resultado esperado
+En el query de la tabla `pg_stat_statements`, podrás ver las estadísticas y resultados en las siguientes columnas.
+
+- `query`: la consulta que se ejecutó.
+- `calls`: veces que se ejecutó.
+- `total_time`: suma del tiempo total.
+- `mean_time`: tiempo promedio por llamada.
+- `rows`: total de filas devueltas.
