@@ -14,7 +14,10 @@ Al finalizar la práctica, serás capaz de:
 <br/><br/>
 
 ## Objetivo visual
+
 En esta práctica se verá el manejo de transacciones en PostgreSQL. 
+
+<br/>
 
 ![diagrama1](../images/transaccion.jpg)
 
@@ -167,6 +170,7 @@ SELECT saldo FROM cuentas WHERE nombre = 'Juan';
 <br/>
 
 **Salida (Sesión B)**
+
 ```
 saldo
 -------
