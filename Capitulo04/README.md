@@ -14,7 +14,10 @@ Al finalizar la práctica, serás capaz de:
 <br/><br/>
 
 ## Objetivo visual
+
 En estas prácticas se verá cómo realizar respaldos y restauraciones físicas de PostgreSQL, así como la herramienta Autovacuum.
+
+<br/>
 
 ![diagrama1](../images/respaldos.jpg)
 

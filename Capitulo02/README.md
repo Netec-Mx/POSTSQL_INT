@@ -17,8 +17,10 @@ Al finalizar la práctica, serás capaz de:
 <br/>
 
 ## Objetivo visual
+
 En esta práctica se verá la creación y manejo de índices en PostgreSQL. El siguiente diagrama muestra la construcción de los índices B-Tree en PostgreSQL.
 
+<br/>
 ![diagrama2](../images/btree.png)
 
 

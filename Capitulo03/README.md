@@ -17,7 +17,10 @@ Al finalizar la práctica, serás capaz de:
 <br/>
 
 ## Objetivo visual
+
 En la siguiente práctica, verás cómo analizar y mejorar el desempeño de las sentencias SQL en PostgreSQL.
+
+<br/>
 
 ![diagrama3](../images/tuning.png)
 
