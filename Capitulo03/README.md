@@ -1,4 +1,4 @@
-# Práctica 3. Afinación de SQL
+# Práctica 3. Afinación de consultas y funciones
 
 <br/>
 <br/>
