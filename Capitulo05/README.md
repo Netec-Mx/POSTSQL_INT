@@ -1,5 +1,5 @@
 
-# Práctica 5. Replicación Lógica en PostgreSQL 16
+# Práctica 5. Replicación lógica y particionamiento de tablas
 
 <br/>
 <br/>
