@@ -1,4 +1,4 @@
-# Práctica 2. Índices y tipos de datos en PostgreSQL
+# Práctica 2. Manejo de los diferentes tipos de datos que existen en PostgreSQL
 
 <br/>
 <br/>
