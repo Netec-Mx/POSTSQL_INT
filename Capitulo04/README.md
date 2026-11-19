@@ -41,7 +41,7 @@ CREATE USER replicador WITH REPLICATION ENCRYPTED PASSWORD 'tu_contraseña_segur
 **Paso 2.** Configura `pg_hba.conf` en el servidor primario.
 
 -	El archivo `pg_hba.conf` controla la autenticación de clientes de PostgreSQL. Necesitas agregar una entrada que permita al usuario replicador conectarse desde la máquina donde ejecutarás `pg_basebackup`.
--	Localiza el archivo `pg_hba.conf`. Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL; por ejemplo, `/var/lib/postgresql/16/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo (SO).
+-	Localiza el archivo `pg_hba.conf`. Este archivo se encuentra típicamente en el directorio de datos de tu instalación de PostgreSQL; por ejemplo, `/var/lib/postgresql/18/main/pg_hba.conf` o similar, dependiendo de tu versión y sistema operativo (SO).
 
 ```sql
 
@@ -88,7 +88,7 @@ En donde:
 
 <br/><br/>
 
-**Paso 4.** Verifica y configura el archivo `/etc/postgresql/16/main/postgresql.conf`.
+**Paso 4.** Verifica y configura el archivo `/etc/postgresql/18/main/postgresql.conf`.
 
 -	Crea el directorio `/var/lib/postgresql/archive` desde el usuario `posgresql`.
 
@@ -183,25 +183,25 @@ De la práctica anterior, restaura todo el clúster de PostgreSQL. Después veri
 
 **Paso 2.** Elimina o renombra el `$PGDATA` actual:
 
-`mv  /var/lib/postgresql/16/main   /var/lib/postgresql/16/main_old`
+`mv  /var/lib/postgresql/18/main   /var/lib/postgresql/18/main_old`
 
 <br/>
 
 **Paso 3.** Crea el directorio `$PGDATA` desde el usuario `postgre`:
 
-`mkdir  /var/lib/postgresql/16/main` 
+`mkdir  /var/lib/postgresql/18/main` 
 
 <br/>
 
 **Paso 4.** Copia desde el directorio de respaldos, el respaldo físico.
 
-`tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
+`tar -xzf base.tar.gz -C /var/lib/postgresql/18/main`
 
 <br/>
 
 **Paso 5.** Restaura los archivos WAL.
 
-`tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal`
+`tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/18/main/pg_wal`
 
 - Asegúrate de tener el `restore_command` bien definido.
 - Opcional: si hay `PITR` colocar el archivo `recovery.signal` en el nuevo `$PGDATA`.
@@ -210,8 +210,8 @@ De la práctica anterior, restaura todo el clúster de PostgreSQL. Después veri
 
 **Paso 6.** (muy importante). Actualiza el propietario y los permisos del directorio `main`.
 ```
-sudo chown postgres:postgres /var/lib/postgresql/16/main
-sudo chmod 700 /var/lib/postgresql/16/main
+sudo chown postgres:postgres /var/lib/postgresql/18/main
+sudo chmod 700 /var/lib/postgresql/18/main
 ```
 
 <br/>
@@ -224,7 +224,7 @@ sudo chmod 700 /var/lib/postgresql/16/main
 
 **Paso 8.** Verifica `logs` y estado:
 
-	`tail -f /var/log/postgresql/postgresql-16-main.log`
+	`tail -f /var/log/postgresql/postgresql-18-main.log`
 
 <br/><br/>
 
@@ -404,7 +404,7 @@ Lo cual genera los siguientes archivos.
 Para restaurar el "clúster", ejecuta:
 
 ```bash
-tar -xzf base.tar.gz -C /var/lib/postgresql/16/main` 
+tar -xzf base.tar.gz -C /var/lib/postgresql/18/main` 
 ```
 
 <br/>
@@ -413,7 +413,7 @@ tar -xzf base.tar.gz -C /var/lib/postgresql/16/main`
 Restaura los archivos WAL.
 
 ```bash
-tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/16/main/pg_wal
+tar -xzf pg_wal.tar.gz -C /var/lib/postgresql/18/main/pg_wal
 ```
 
 <br/>
