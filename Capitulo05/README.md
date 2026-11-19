@@ -19,7 +19,7 @@ Al finalizar la práctica, serás capaz de:
 
 
 <div align="center">
-  <img src="../images/cc.png" alt="Imagen Clúster PostgreSQL 16" width="50%">
+  <img src="../images/cc.png" alt="Imagen Clúster PostgreSQL 18" width="50%">
 </div>
 
 <br/><br/>
@@ -32,7 +32,7 @@ Ejecutar en sistema operativo
 
 ```bash
 
-sudo pg_createcluster 16 replica --start --port=5433
+sudo pg_createcluster 18 replica --start --port=5433
 
 ```
 
@@ -67,7 +67,7 @@ SHOW config_file;
 ### Ejecutar en sistema operativo. Editar configuración (nano o vi o vim):
 
 ```bash
-sudo nano /etc/postgresql/16/main/postgresql.conf
+sudo nano /etc/postgresql/18/main/postgresql.conf
 ```
 
 <br/>
@@ -85,7 +85,7 @@ max_wal_senders = 10
 ### Editar acceso:
 
 ```bash
-sudo nano /etc/postgresql/16/main/pg_hba.conf
+sudo nano /etc/postgresql/18/main/pg_hba.conf
 ```
 
 <br/>
@@ -102,7 +102,7 @@ host    all     replicador      127.0.0.1/32          md5
 
 ```bash
 
-sudo systemctl restart postgresql@16-main
+sudo systemctl restart postgresql@18-main
 
 ```
 
